@@ -1,0 +1,166 @@
+.landing {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: $secondary-blue;
+     background-size: cover;
+
+     @media only screen and (max-width: $bpsmallest) {
+        background-position: right;
+    }
+    position: relative;
+
+    .independence {
+        position: fixed;
+        top: 3rem;
+        right: 3rem;
+        width: 11rem;
+        height: 11rem;
+        text-align: center;
+        border-radius: 50%;
+        padding: 1rem;
+        z-index: 1000;
+        box-shadow: 1px 1px 1rem white;
+
+        &  img {
+            width: 50%;
+            margin: auto;
+            margin-top: 2.5rem;
+            
+        }
+        &  p {
+            font-size: 1.5rem;
+            font-weight: 100;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+    }
+    @keyframes fsp {
+        from {
+            transform: rotate(0deg);
+        }to {
+            transform: rotate(360deg);
+        }
+    }
+    .fsp {
+        
+        position: fixed;
+        top: 3rem;
+        left: 3rem;
+        width: 11rem;
+        height: 11rem;
+        text-align: center;
+        border-radius: 50%;
+        padding: 1rem;
+        z-index: 1000;
+        box-shadow: 1px 1px 1rem white;
+
+        &  img {
+            animation: fsp 10s infinite ease-in-out;
+            width: 50%;
+            margin: auto;
+            margin-top: 1rem;
+            
+        }
+        &  p {
+            font-size: 1.5rem;
+            font-weight: 100;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+    }
+
+    &  .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        z-index: 1;
+    }
+
+    &  .signin {
+        position: relative;
+        z-index: 100;
+        padding: 2rem 3rem;
+        animation: signin infinite 2s alternate;
+        background-color: white;
+        width: 35rem;
+        color: white;
+        margin-top: 40vh;
+        margin-left: 50vw;
+        transform: translate(-50%,-50%);
+        box-shadow: 3px 3px 2rem rgb(29, 29, 29);
+        border-radius: 1rem;
+
+        &  p {
+           color: rgb(119, 119, 119); 
+           font-size: 1.4rem;
+           padding: 1rem 0;
+            
+        }
+       
+
+            &  .fields {
+                margin: 1rem 0;
+                width: 90%;
+                
+
+                &  .input {
+                    display: block;
+                    width: 100%;
+                    margin: 1.5rem 0;
+                    padding: 1rem;
+                    font-size: 1.5rem;
+                    outline-color: $primary-blue;
+                    border: 2px solid rgb(224, 224, 224);
+                    border-radius: .7rem;
+                    &::placeholder {
+                        color: rgb(179, 179, 179);;
+                    }
+                }
+            }
+
+            
+
+            &  .cta {
+                margin-top: 3rem;
+                &  button {
+                    background-color: $secondary-blue;
+                    padding: 1.3rem 2rem;
+                    width: 85%;
+                    border-radius: .5rem;
+                    border: none;
+                    color: $white;
+                }
+            }
+
+            &  .link {
+                color: black
+            }
+        
+    }
+
+    &  .error {
+        font-size: 1.5rem;
+        color: rgb(255, 255, 255);
+        font-style: italic;
+        font-weight: 100;
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem 2rem;
+        border-radius: 5rem;
+        border-bottom-right-radius: 0;
+        background-color: rgba(255, 0, 0, 0.288);
+
+        @media only screen and (max-width: $bpsmallest) {
+            background-color: rgba(255, 0, 0, 0.651);
+            bottom: 1rem;
+            right: 1rem;
+            border-radius: 0;
+        }
+    }
+}

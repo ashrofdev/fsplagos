@@ -1,0 +1,48 @@
+button {
+    outline: none;
+    cursor: pointer;
+    transition: all .5s;
+}
+.primary_btn {
+    background-color: $secondary-blue;
+    padding: 1rem 3rem;
+    font-size: 1.3rem;
+    border: none;
+    color: $white;
+
+    &:hover {
+        background-color: $black;
+    }
+}
+.primary_btn_orange {
+    background-color: $secondary-orange;
+    padding: 1rem 3rem;
+    font-size: 1.3rem;
+    border: none;
+    color: $white;
+
+    &:hover {
+        background-color: $black;
+    }
+}
+
+.secontary_btn {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    padding: .5rem;
+    font-size: 1.2rem;
+    border: none;
+    color: $lightgray;
+    font-weight: 900;
+
+    &  span {
+        font-size: 5rem;
+        margin-right: 1rem;
+        font-weight: 10;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}

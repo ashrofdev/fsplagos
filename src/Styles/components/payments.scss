@@ -1,0 +1,116 @@
+.payments {
+
+    &  .currenttotal {
+        font-size: 1.3rem;
+        background-color: rgba(238, 165, 30, 0.815);
+        border-radius: 10rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: $white;
+        padding: .5rem 2rem;
+        margin: 1rem 0;
+    }
+
+    &  .table {
+        margin-top: 2rem;
+            height: 65vh;
+            overflow: scroll;
+
+        &  table {
+            border-collapse: collapse;
+
+            &  tr {
+                &:nth-child(odd){
+                    background-color: rgb(255, 242, 223);
+                }
+            }
+
+            &  th {
+                padding: 1rem;
+                font-size: 1.2rem;
+                background-color: $primary-orange;
+                color: $white;
+                margin: .2rem;
+                box-shadow: 1px 1px 2px rgb(75, 75, 75);
+                text-align: left;
+            }
+
+            &  td {
+                padding: 1rem;
+                font-size: 1.2rem;
+                box-shadow: 1px 1px 2px rgb(231, 231, 231);
+            }
+        }
+    }
+
+    &  .form {
+        width: 30rem;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        background-color: rgb(255, 247, 232);
+        border-radius: 1rem;
+
+        &  .header {
+            background-color: $primary-orange;
+            padding: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            color: $white;
+            align-items: center;
+            border-radius: .5rem;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            cursor: pointer;
+            box-shadow: 2px 2px 1rem rgb(199, 199, 199);
+
+            &  button {
+                color: $white;
+                font-size: 1.8rem;
+                border: none;
+                background-color: transparent;
+            }
+        }
+
+        &  form {
+            padding: 2rem 0;
+            box-shadow: 2px 2px 1rem rgb(199, 199, 199);
+            text-align: center;
+
+            &  input {
+                padding: 1rem;
+                width: 85%;
+                margin: 1rem auto;
+                font-size: 1.5rem;
+                outline: none;
+            }
+
+            &  select {
+                height: 4rem;
+                text-align: left;
+                outline: none;
+            }
+            &  button {
+                margin-top: 2rem;
+            }
+        }
+
+        &  .input {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            margin-left: 1rem;
+        }
+
+        &  .proceed {
+            padding: 1rem 2rem;
+            text-transform: uppercase;
+            background-color: $primary-orange;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+        }
+    }
+
+}

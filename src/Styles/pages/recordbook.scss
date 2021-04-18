@@ -1,0 +1,24 @@
+.duedates {
+
+    &  .gridd {
+        padding: 5rem 2rem;
+        display: grid;
+        grid-template-columns: repeat( 2, 1fr );
+        grid-gap: 5rem;
+
+        &  .date {
+            display: flex;
+            box-shadow: 5px 5px 5px $light-background;
+            
+            &  p {
+                padding: 1rem;
+                font-size: 1.5rem;
+
+                &:nth-child(1) {
+                    background-color: $primary-blue;
+                    color: $white;
+                }
+            }
+        }
+    }
+}

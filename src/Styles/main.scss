@@ -1,0 +1,34 @@
+////// Variables
+@import './variables';
+
+
+@import './App';
+
+////// components
+@import './components/animations';
+@import './components/btns';
+@import './components/createandregisterform';
+@import './components/heading';
+@import './components/infobox';
+@import './components/payments';
+@import './components/paymentmodal';
+@import './components/progressbar';
+@import './components/sidebar';
+@import './components/table';
+
+
+////// pages
+@import './pages/changebank';
+@import './pages/dashboard';
+@import './pages/edithprogress';
+@import './pages/homepage';
+@import './pages/landingpage';
+@import './pages/messaging';
+@import './pages/overview';
+@import './pages/paymenthistory';
+@import './pages/upgrade';
+@import './pages/recordbook';
+@import './pages/resetpassword';
+@import './pages/stageprogress';
+@import './pages/synerg';
+

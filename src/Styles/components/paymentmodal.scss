@@ -1,0 +1,61 @@
+.paymentspop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.603);
+
+    &  .paymentsmodal {
+        width: 60vw;
+        margin: auto;
+        margin-top: 8rem;
+        border-radius: .5rem;
+        overflow: hidden;
+
+        &  header {
+            color: $white;
+
+            &  button {
+                background-color: transparent;
+                border: none;
+                color: $white;
+            }
+        }
+
+        &  .bodyy {
+            background-color: $white;
+            padding: 2rem;
+            height: 60vh;
+            overflow: scroll;
+
+            &  .roll {
+                display: grid;
+                grid-template-columns: 3rem 5rem 30rem repeat(3, 1fr);
+                grid-gap: 2rem;
+                align-items: center;
+                padding: 2rem;
+                font-size: 1.2rem;
+                border-bottom: 1px solid $lightbordercolor;
+            }
+        }
+        &  .cta {
+            text-align: right;
+            padding: 1rem;
+            background-color: white;
+
+            &  button {
+                padding: 1.5rem 3rem;
+                border-radius: .5rem;
+                box-shadow: 2px 2px 1rem rgba(0, 0, 0, 0.568);
+                border: none;
+                background-color: $secondary-blue;
+                color: $white;
+            }
+            &  .paystack {
+                background-color: rgb(25, 116, 85);
+                margin-right: 1rem;
+            }
+        }
+    }
+}

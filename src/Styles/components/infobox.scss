@@ -1,0 +1,27 @@
+.infobox {
+    padding: 1rem;
+    border-left: 3px solid $primary-orange;
+    border-radius: .5rem;
+    box-shadow: 1px 1px .7rem rgb(173, 172, 172);
+    margin-bottom: 1rem;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &  p {
+        font-size: 1.5rem;
+        
+
+        &  span {
+            font-size: 1rem;
+            display: block;
+            margin-top: 1rem;
+            font-style: italic;
+            font-weight: 100;
+        }
+    }
+    &  span {
+        font-size: 1.5rem;
+    }
+}
