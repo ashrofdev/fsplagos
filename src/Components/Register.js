@@ -1,7 +1,8 @@
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { firebaseDB } from '../firebase';
+import Alert from './Alert';
 
 const Register = () => {
     const [marketers, setMarketers] = useState([
@@ -569,6 +570,20 @@ const Register = () => {
     const [bankCode, setBankCode] = useState("044")
     const [bankName, setBankName] = useState("Enter bank details to reveal name...")
     const [filteredMarketers, setfilteredMarketers] = useState(marketers)
+    const [loading, setLoading] = useState(false)
+    const [alert, setAlert] = useState({
+        status: false,
+        type: 'positive',
+        message: ''
+    })
+
+    useEffect(()=> {
+      if(alert.status===true){
+        setTimeout(() => {
+          setAlert({status: false})
+        }, 10000);
+      }
+    })
 
 
     // declearing functions
@@ -607,11 +622,13 @@ const Register = () => {
                     })
                 }).catch(e=>{
                     console.log(e)
+                    setBankName('Couldn\'t fetch bank name!')
             })
         }
     }
 
     const register = (e) => {
+      setLoading(true)
       e.preventDefault()
       const userDetails = {
         ["Registration Date"]: moment().format("DD-MM-YYYY"),
@@ -623,28 +640,54 @@ const Register = () => {
         phone: e.target.phone.value,
         nok: e.target.nok.value,
         nok_phone: e.target.nokphone.value,
-        // bank: e.target.bank.value,
+        bankCode,
         acc_no: e.target.acc_no.value,
         accountOfficer: e.target.aOfficer.value,
         // userid: e.target.userid.value,
-        username: 'lastUsername',//lastUsername,
         account_type: e.target.account_type.value,
         // planType: e.target.planType.value,
         Stage: 0,
         lastActivityTitle: 'registration'
       }
       firebaseDB.ref("lastUsername").once('value').then(snapshot=> {
-        const username = `FSPY0${snapshot.val().yakata+1}`
+        const username = `FSPY0${parseInt(snapshot.val().yakata)+1}`
+        console.log(username)
+        if(bankName === 'Couldn\'t fetch bank name!'){
+          setLoading(false)
+          setAlert({
+            status: true,
+            message: 'Investor cannot be registered without a valid bank account'
+          })
+        }else if(bankName === 'Fetching bank name...') {
+          setLoading(false)
+          setAlert({
+            status: true,
+            message: 'Verifying account details'
+          })
+        }else {
+          firebaseDB.ref('investors').push().set({...userDetails, ["User name"]: username}).then(()=> {
+            firebaseDB.ref("lastUsername").update({yakata: parseInt(snapshot.val().yakata)+1}).then(()=> {
+              setAlert({
+                status: true,
+                type: 'positive',
+                message: 'Account registered successfully'
+              })
+              setLoading(false)
+              document.querySelector('form').reset()
+            })
+          })
+        }
 
-        firebaseDB.ref('investors').push().set({...userDetails, ["User name"]: username}).then(()=> {
-
-        })
       })
       
     }
 
     return (
         <div className="register">
+            {
+              alert.status?
+              <Alert type={alert.type} message={alert.message}/>:null
+            }
             <header className="regheader">Add a new investor</header>
             <div className="container">
             <form className="regform" onSubmit={(e)=>register(e)}>
@@ -692,7 +735,11 @@ const Register = () => {
                     </ul>
                 </div>
                 <div className="cta">
-                    <button className="btn">Add investor</button>
+                    {
+                      loading?
+                      <button className="btn"><FontAwesome size="1x" name="spinner" spin={true}/></button>:
+                      <button className="btn">Add investor</button>
+                    }
                 </div>
             </form>
                 <button className="toggle" onClick={close}>{">"}<FontAwesome name="angle"/></button>

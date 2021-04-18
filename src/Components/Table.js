@@ -5,9 +5,12 @@ import { UserContext } from './Context';
 import moment from 'moment';
 import business from 'moment-business-days';
 import Payments from './Payments';
+import BulkMessaging from './BulkMessaging';
+import FontAwesome from 'react-fontawesome';
 
 const Table = () => {
     const [openBoard, setOpenDashboard] = useState(false)
+    const [bulk, openBulk] = useState(false)
     const [payment, togglePayment] = useState(false)
     const [payments, togglePayments] = useState(false)
     const [issuesActive, openIssues] = useState(false)
@@ -23,6 +26,11 @@ const Table = () => {
         // getRoi()
         useEffect(()=>{
             getInvestors()
+            if(investor.key){
+                firebaseDB.ref('investors').child(investor.key).on('value', snapshot => {
+                    setInvestor({...snapshot.val(), key: snapshot.key})
+                })
+            }
         },[])
 
     useEffect(()=>{
@@ -32,6 +40,7 @@ const Table = () => {
                 togglePayment(!payment)
             }
         })
+        
     })
 
     const getIssues = (investors) => {
@@ -163,7 +172,7 @@ const Table = () => {
     
     const pushUser = (investor, checked) => {
         if(checked){
-            firebaseDB.ref('payments').child(investor.key).set({...investor, dateAdded: moment().toString()})
+            firebaseDB.ref('payments').child(investor.key).set({...investor})
         }else {
             firebaseDB.ref('payments').child(investor.key).set(null)
         }
@@ -171,6 +180,12 @@ const Table = () => {
 
     return (
         <div className="table">
+
+            {
+                bulk?
+                <BulkMessaging/>:null
+            }
+
             {
                 payments?
                 <Payments togglePayments={togglePayments}/>:null
@@ -188,6 +203,11 @@ const Table = () => {
             {/* Table  */}
             {/* Sraech model */}
             <div className="search">
+                {
+                    bulk?
+                    <button className="payments" onClick={()=> openBulk(!bulk)}><FontAwesome size="1x" name="times" /></button>:
+                    <button className="payments" onClick={()=> openBulk(!bulk)}><FontAwesome size="1x" name="envelope" /></button>
+                }
                 <input onChange={(e)=> handleSearchChange(e.target.value)} placeholder="Filter investors..."/>
                 <button className="payments" onClick={()=> togglePayments(true)}>Payments</button>
             </div>
@@ -233,7 +253,8 @@ const Table = () => {
                                             <p>{investor.dueDate.toString()}</p>:null
                                         }
                                         {
-                                            investor.issuesArray.map(issue=>  <div>
+                                            investor.issuesArray.map((issue, i)=>  <div className="issuee">
+                                                                            <p>{i+1}</p>
                                                                             <p>{issue.title}</p>  
                                                                             <p>{issue.comment}</p>  
                                                                         </div>

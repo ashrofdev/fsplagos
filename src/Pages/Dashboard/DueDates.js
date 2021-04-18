@@ -48,6 +48,9 @@ const DueDates = () => {
                     })
                 }
             </div>
+            <div className="cta">
+                <button>Resend duedates</button>
+            </div>
         </div>
     );
 };

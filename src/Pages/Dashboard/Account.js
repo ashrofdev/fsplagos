@@ -3,6 +3,7 @@ import FontAwesome from 'react-fontawesome';
 import Fade from 'react-reveal/Fade'
 import { UserContext } from '../../Components/Context';
 import { firebaseDB } from '../../firebase';
+import Alert from '../../Components/Alert';
 
 const Account = () => {
     const investor = React.useContext(UserContext)
@@ -39,6 +40,13 @@ const Account = () => {
     const [targetName, setTargetName] = useState("")
     const [accNo, setAccNo] = useState("")
     const [percentageEquality, setPercentageEquality] = useState(0)
+    const [loading, setLoading] = useState(false)
+    const [alert, setAlert] = useState({
+        status: false,
+        type: 'positive',
+        message: ''
+    })
+
 
     useEffect(()=>{
         if(investor.bankCode){
@@ -131,6 +139,13 @@ const Account = () => {
             })
         }
     },[])
+    useEffect(()=> {
+        if(alert.status===true){
+          setTimeout(() => {
+            setAlert({status: false})
+          }, 10000);
+        }
+      })
 
     const getBankName = (e) => {
         setAccNo(e.trim())
@@ -159,6 +174,7 @@ const Account = () => {
     }
 
     const editBank = () => {
+        setLoading(true)
         const invName = investor.Name.split("").sort().join("").toLowerCase()
         const bankName = targetName.split("").sort().join("").toLowerCase()
 
@@ -181,14 +197,30 @@ const Account = () => {
                 bank: bank.split(",")[1],
                 bankCode: bank.split(",")[2],
                 acc_no: accNo
+            }).then(()=> {
+                setAlert({
+                    status: true,
+                    type: 'positive',
+                    message: 'Account details updates successfully'
+                })
+                setLoading(false)
             })
         }else {
-            /// ux message
+            setAlert({
+                status: true,
+                type: 'neg',
+                message: 'Verification error'
+            })
+            setLoading(false)
         }
     }
 
     return (
         <div className="account">
+            {
+                alert.status?
+                <Alert type={alert.type} message={alert.message} />:null
+            }
              <header>Account</header>
              <div className="body">
                  <div className="details">
@@ -217,7 +249,11 @@ const Account = () => {
                             </select>
                             <input onChange={(e)=> getBankName(e.target.value)} placeholder="Account number"/>
                             <p>{targetName} - {percentageEquality}% equal</p>
-                            <button onClick={editBank}>Save changes</button>
+                            {
+                                loading?
+                                <button className="btn"><FontAwesome size="1x" name="spinner" spin={true}/></button>:
+                                <button onClick={editBank}>Save changes</button>
+                            }
                         </div>
                      </Fade>:null
                  }

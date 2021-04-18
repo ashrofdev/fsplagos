@@ -27,7 +27,8 @@ const Payments = ({togglePayments}) => {
                 "AccountNo":payment.acc_no.trim(),
                 "Amount": payment.nextEarningAmount,
                 "Narration":payment.naration,
-                "key": payment.key
+                "key": payment.key,
+                "stage": payment.keStagey,
             })
         }else {
             const position = payRoll.findIndex(e=> e.AccountNo===payment.acc_no.trim())
@@ -61,6 +62,14 @@ const Payments = ({togglePayments}) => {
                 //     })
                 //     setPayments(paymentss)
                 // })
+            })
+        })
+    }
+
+    const update = () => {
+        payRoll.forEach(roll=> {
+            firebaseDB.ref('investors').child(roll.key).update({
+                Stage: parseInt(roll.stage)+1
             })
         })
     }
@@ -100,7 +109,7 @@ const Payments = ({togglePayments}) => {
 
                 <div className="cta">
                     <button className="decline" onClick={declineSelected}>Decline selected</button>
-                    <button className="initiate">Initiate selected</button>
+                    <button className="initiate" onClick={update}>Update selected</button>
                 </div>
                 
                 <div className="cta">

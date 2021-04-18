@@ -11,6 +11,7 @@ import Issue from './Issue';
 import Upgrade from './Upgrade';
 
 const Dashboard = ({openDashboard}) => {
+    
     return (
         <>
             <Fade right duration={500}>

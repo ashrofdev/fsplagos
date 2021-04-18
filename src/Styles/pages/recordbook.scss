@@ -21,4 +21,17 @@
             }
         }
     }
+
+    &  .cta {
+        padding: 2rem;
+        text-align: right;
+
+        &  button {
+            padding: 1rem 2rem;
+            background-color: $primary-blue;
+            color: $white;
+            border-radius: .5rem;
+            border: none;
+        }
+    }
 }

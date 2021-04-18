@@ -72,6 +72,8 @@
         background-color: rgb(230, 249, 255);
         padding: 2rem;
         color: rgb(82, 82, 82);
+
+        
     }
 
     &  .tablebody {
@@ -86,6 +88,28 @@
             padding: 2rem;
             border-bottom: 1px solid $light-background;
             cursor: pointer;
+
+            &  .issuee {
+                grid-column: 2/-1;
+                display: flex;
+                margin-top: 1rem;
+                border: 1px solid $light-background;
+                padding: .5rem;
+                &  p {
+                    &:nth-child(1){
+                        font-weight: 900;
+                        margin-right: 2rem;
+                        font-size: 1.3rem;
+                        background-color: $primary-orange;
+                        padding: .3rem .5rem;
+                    }
+                    &:nth-child(2){
+                        font-weight: 900;
+                        margin-right: 2rem;
+                        font-size: 1.3rem;
+                    }
+                }
+            }
 
             &:hover {
             background-color: rgb(249, 253, 255);
