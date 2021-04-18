@@ -75,7 +75,7 @@ const Table = () => {
     }
 
     const getInvestors = async () => {
-        await firebaseDB.ref('investors').limitToLast(10).once('value').then(snapshot => {
+        await firebaseDB.ref('investors').limitToLast(10).on('value',snapshot => {
             const investors = []
             const issues = []
             const email = []
