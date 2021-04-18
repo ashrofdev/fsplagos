@@ -1,0 +1,109 @@
+.history {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 3rem;
+
+    &  .transactions {
+        width: 60%;
+        border-collapse: collapse;
+
+        &  header {
+            display: grid;
+            grid-template-columns: minmax(min-content, 2rem) repeat(4, 1fr);
+            align-items: center;
+            grid-gap: 1rem;
+            border-top: 1px solid rgb(231, 231, 231);                
+            border-bottom: 1px solid rgb(231, 231, 231);
+            border-left: none;
+            border-right: none;
+            background-color: rgba(179, 179, 179, 0.247);
+
+            &  p {
+                font-weight: 900;
+                font-size: 1.3rem;
+                padding: .5rem;
+            }
+        }
+
+        &  .transaction {
+            display: grid;
+            grid-template-columns: minmax(min-content, 2rem) repeat(4, 1fr);
+            align-items: center;
+            grid-gap: 1rem;
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(214, 214, 214);
+            }
+
+            &:nth-child(odd){
+                background-color: rgb(230, 230, 230);
+            }
+            border-top: 1px solid rgb(231, 231, 231);                
+            border-bottom: 1px solid rgb(226, 226, 226);
+            border-left: none;
+            border-right: none;
+
+            &  p {
+                font-size: 1.2rem;
+                padding: .5rem;
+
+            }
+        }
+    }
+    &  .details {
+        width: 40%;
+        margin-left: 1rem;
+        background-color: rgba(197, 217, 255, 0.205);
+        border-radius: 1rem;
+        padding: 2rem;
+
+        
+        &  .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+
+            &  .data {
+                font-size: 1.5rem;
+                font-weight: 900;
+                margin-right: .5rem;
+            }
+            &  p {
+                font-size: 1.2rem;
+            }
+        }
+
+        &  .status {
+            margin: 5rem;
+            font-size: 2rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            text-transform: uppercase;
+
+            &  .fa {
+                width: 5rem;
+                height: 5rem;
+                font-size: 2rem;
+                font-weight: 400;
+                border-radius: 50%;
+                border: .5rem solid currentColor;
+                padding-top: 2rem;
+                color: blue;
+            }
+        }
+
+        &  .success {
+            color: rgb(53, 230, 106);
+        }
+        &  .pending {
+            color: rgb(66, 126, 255);
+        }
+        &  .failed {
+            color: rgb(250, 4, 4);
+        }
+    }
+}

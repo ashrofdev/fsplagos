@@ -1,0 +1,70 @@
+.account {
+
+    &  .body {
+        padding: 2rem 0;
+
+        &  .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            background-color: rgba(226, 226, 226, 0.171);
+            padding: 1rem 2rem;
+
+            &  .left {
+                font-size: 150%;
+                font-style: italic;
+                opacity: .7;
+
+                &  h3 {
+                    font-weight: 300;
+                    font-size: 1.5rem;
+                }
+
+                &  p {
+                    margin: .5rem 0;
+                }
+            }
+
+            &  .right {
+                color: rgb(116, 116, 116);
+                cursor: pointer;
+                transition: all .5s;
+
+                &:hover {
+                    color: $secondary-blue;
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        &  .form {
+            width: 50%;
+            margin: 5rem auto;
+            box-shadow: 1px 1px 5px $light-background;
+
+            &  select {
+                display: block;
+                padding: 1rem;
+                width: 100%;
+                margin: .5rem 0;
+            }
+
+            &  input {
+                display: block;
+                width: 100%;
+                padding: 1rem;
+                margin: .5rem 0;
+            }
+            &  button {
+                padding: 1.2rem;
+                color: $white;
+                width: 100%;
+                border: none;
+                background-color: $secondary-blue;
+                border-radius: .5rem;
+                margin-top: 1rem;
+            }
+        }
+    }
+}

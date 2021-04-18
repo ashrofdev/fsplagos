@@ -1,0 +1,60 @@
+.upgrade {
+
+    &  h2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem;
+    }
+    .upgradecard {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5rem;
+        border: 1px solid $lightbordercolor;
+        padding: 1rem;
+
+
+        &  h3 {
+            font-size: 2rem;
+        }
+        &  button {
+            padding: .5rem 1rem;
+            background-color: $secondary-blue;
+            color: $white;
+            margin: 2rem;
+            border: none;
+            border-radius: .5rem;
+        }
+    }
+    &  .cta {
+        width: 90%;
+        margin: 2rem auto;
+        text-align: center;
+
+        &  .btn {
+            padding: 1rem 2rem;
+            background-color: $secondary-blue;
+            border: none;
+            border-radius: .5rem;
+            color: $white;
+            width: 30%;
+        }
+    }
+
+    &  .upgrades {
+        max-height: 30vh;
+        overflow: scroll;
+        margin-top: 5rem;
+
+        &  .upgrade {
+            margin: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid $lightbordercolor;
+        }
+    }
+    
+}

@@ -1,0 +1,77 @@
+.messaging {
+        position: relative;
+
+    &  .body {
+        padding: 2rem;
+        &  label {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+        }
+
+        &  .textarea {
+            display: block;
+            padding: 1rem;
+            width: 40vw;
+            height: 15rem;
+            margin: 2rem 0;
+            border: 1px solid rgb(235, 235, 235);
+            border-radius: .5rem;
+        }
+        & p{
+           
+        }
+       &  .cta {
+            margin: 2rem 0;
+            text-align: right;
+
+            &  button {
+                padding: 1rem 3rem;
+                background-color: $secondary-blue;
+                border: none;
+                border-radius: .5rem;
+                color: $white;
+            }
+       }
+
+       &  .preview {
+            background-color: rgba(0, 0, 0, 0.596);
+            padding-top: 5rem;
+            position: absolute;
+            width: 100%;
+            height: 90%;
+            top: 0%;
+            left: 0%;
+
+            &  .previewmodal {
+                background-color: $white;
+                width: 50%;
+                margin: auto;
+                box-shadow: 1px 1px 5px rgb(68, 68, 68);
+                border-radius: .5rem;
+                overflow: hidden;
+
+                &  header {
+                    padding: 1rem;
+                    margin: 0;
+                    background-color: $secondary-blue;
+                    color: $white;
+                    &  .fa {
+                        color: white;
+                    }
+                }
+
+                &  p {
+                    padding: 2rem;
+                    font-size: 1.2rem;
+                    height: 10rem;
+                    overflow: scroll;
+                    border-bottom: 1px solid $light-background;
+                }
+                &  button {
+                    margin: .5rem 1rem;
+                }
+                
+            }
+       }
+    }
+}

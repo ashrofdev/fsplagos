@@ -1,0 +1,17 @@
+@keyframes signin {
+    from {
+        transform: translate(-50%,-51%);
+    }
+    to {
+        transform: translate(-50%,-50%);
+    }
+}
+
+@keyframes holidays {
+    from {
+        transform: translateY(-15%);
+    }
+    to {
+        transform: none;
+    }
+}

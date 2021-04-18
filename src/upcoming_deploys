@@ -1,0 +1,595 @@
+import React, { Component } from 'react';
+import Fade from 'react-reveal/Fade'
+import { PrimaryBtn } from './Btns';
+import { firebaseDB } from '../firebase';
+import Bounce from 'react-reveal/Bounce';
+import moment from 'moment';
+import business from 'moment-business-days'
+
+const date = new Date()
+
+class Register extends Component {
+
+
+    state = {
+        investors: [],
+        isLoading: false,
+        html: '',
+        age: 0,
+        accountName: '',
+        gettingAccName: false,
+        fullname: '',
+        isFocused: false,
+        existingUser: {},
+        userExists: false,
+        username:'',
+        isPremium: false,
+        dueDate: `${date.getUTCDate()}-${date.getUTCMonth()}-${date.getUTCFullYear()+1}`,
+        dueDate2: '',
+        editDate: false,
+        capital: 0,
+        invReturn: 0,
+        newlyRegedUsername: '',
+        dueDates: [],
+        search2: '',
+        marketers: [],
+        planType: ''
+    }
+
+    componentDidMount(){
+        firebaseDB.ref('investors').on('value',(snapshot)=>{
+            const investors = []
+            snapshot.forEach(investor => {
+                investors.push(investor.val())
+            });
+            this.setState({investors})
+        })
+        firebaseDB.ref('staff').on('value', (snapshot)=>{
+            const marketers=[]
+            snapshot.forEach(marketer => {
+                marketers.push(marketer.val())
+            });
+            this.setState({marketers, isLoading1:false})
+        })
+    }
+
+    generateDueDates = (regDate, fullname, username, phone) => {
+
+        let days
+        const workingDays = 30
+        
+        let n = 1
+        for(n; n<=9; n++) {
+            days = (workingDays*n)
+            this.getDate(regDate, days)
+        }
+        setTimeout(() => {
+            this.sendWelcomingMessage(fullname, username, phone)
+        }, 1000);
+    }
+
+    getDate=(regDate, days)=>{  
+        console.log(days, regDate)
+        const covidHoliday = 21
+
+        const holidays = ['2019-01-01','2019-02-22','2019-04-19','2019-04-22','2019-05-01','2019-05-29',
+            '2019-06-04','2019-06-05','2019-06-12','2019-08-12','2019-08-13','2019-10-01','2019-11-9',
+            '2019-11-11','2019-12-25','2019-12-26','2020-01-01','2020-04-10','2020-04-13','2020-05-01',
+            '2020-05-25','2020-05-26','2020-06-12','2020-07-30','2020-07-31','2020-10-01','2020-10-29',
+            '2020-12-25','2020-12-26','2021-01-01','2021-04-02','2021-04-05','2021-05-01','2021-05-12',
+            '2021-06-12','2021-07-19','2021-10-01','2021-10-18','2021-12-25','2021-12-26' ]
+        moment.updateLocale('us', {
+            holidays,
+            holidayFormat: 'YYYY-MM-DD'
+        });
+        
+        let ue
+
+        ue = moment(business(regDate, 'YYYY-MM-DD').businessAdd(days)._d).isoWeekday(5)
+        
+        let upcomingEarning = {
+            day: ue.get('date'),
+            month: ue.get('month')+1,
+            year: ue.get('year'),
+        }        
+
+        this.state.dueDates.push(`${upcomingEarning.day}-${upcomingEarning.month}-${upcomingEarning.year}`)
+        console.log(this.state.dueDates)
+    }
+
+    checkUsername = (e)=>{
+        this.setState({userExists: false})
+        const username = e.target.value
+        this.setState({username})
+        this.state.investors.forEach(investor=>{
+
+            if(username.toLowerCase()===investor["User name"].toLowerCase() || username.toLowerCase()===this.state.newlyRegedUsername.toLowerCase()){
+                this.setState({userExists: true, existingUser:investor})
+            }
+        })
+    }
+
+    getAccountName = (accountNo) => {
+        this.setState({gettingAccName: true})
+        const acc = accountNo.target.value
+        fetch(`https://api.paystack.co/bank/resolve?account_number=${acc}&bank_code=044`, 
+            {
+                headers: {
+                'Authorization': 'Bearer sk_test_2684062172e67c4246c232f191b67190a5fb458b'
+                }
+            }
+        ).then(e=>{
+            return e.json()
+            .then(e=>{
+                this.setState({gettingAccName: false})
+                console.log(e)
+                this.setState({accountName: e.data.account_name})
+            })
+        }).catch(e=>{
+            console.log(e)
+        })
+    }
+
+    getHTMLCode = (name, plan) => {
+        ////////////  html code for welcoming mailing /////////////////
+
+        if(plan === 'p_38k'){
+            plan= 38000
+        }else if(plan === 'p_70k'){
+            plan= 70000
+        }else if(plan === 'p_140k'){
+            plan= 140000
+        }else if(plan === 'p_210k'){
+            plan= 210000
+        }else if(plan === 'p_280k'){
+            plan= 280000
+        }else if(plan === 'p_420k'){
+            plan= 420000
+        }else {
+            plan= 490000
+        }
+
+        const html = `<html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body style="margin: auto; text-align: center; font-family: Arial, Helvetica, sans-serif;">
+            
+            <div style=" text-align: left; margin: 2rem;" >
+                <div style="border-bottom: .3rem solid rgb(255, 145, 0); display: flex;align-items: center;">
+                <img style="width: 4rem;height:4rem;margin-bottom:.5rem;" src="https://firebasestorage.googleapis.com/v0/b/fspro-267613.appspot.com/o/FREEDOM%20SYNERGY%20PRO%20zero%20background%20(1).png?alt=media&token=576c6b15-65a5-43ba-ba4e-98d7e494a707"/>
+                <h1 style="margin: .5rem 0;font-size: 1.5rem; color: rgb(68, 66, 66);padding: 1rem;">Freedom Synergy Pro</h1>
+                </div>
+                <div style="color: rgb(78, 78, 78);padding: 1rem;">
+                    <p>Hi there ${name},</p>
+                    <p>This is Freedom Synergy Pro and we are super excited to 
+                    inform you that investment of ₦${plan} 
+                    at Freedom Synergy Pro has been successfully registered with
+                     our mother companies.</p>
+                    <p>Welcome on Board</p>
+                    <h3>Enjoy your ROI every six weeks</h3>
+                </div>
+            </div>
+        </body>
+        </html>`
+        this.setState({html})   
+        /////////////////////////////////////////////////////////////////////
+    }
+
+    getAge = (e)=>{
+        const date = e.target.value.split("-")
+        const year = date[0]
+
+        const currentYear = new Date().getFullYear()
+        const age = currentYear-year
+        this.setState({age})
+    }
+
+    registerUser = (e) => {
+        e.preventDefault()
+        const regDate = e.target.regdate.value.split('-')
+
+        //// defining plan type
+
+        let invplan
+        if(this.state.planType === 'yakata'){
+            invplan = e.target.yakata.value
+        }else {
+            invplan = e.target.bumper.value
+        }
+
+        this.setState({isLoading: true})
+        if(this.state.userExists){
+            this.setState({isLoading: false})
+            this.props.alert('negative', 'Trying to duplicate an already existing user?')
+        }else {
+            const userDetails = {
+                Name: e.target.fullname.value,
+                ["EMAIL ADDRESS"]: e.target.email.value,
+                address: e.target.address.value,
+                birth: e.target.birth.value,
+                ["Registration Date"]: `${regDate[2]}-${regDate[1]}-${regDate[0]}`,
+                formdate: e.target.formdate.value,
+                age: e.target.age.value,
+                invplan,
+                // gender: e.target.gender.value,
+                ["Phone Number"]: e.target.phone.value,
+                nok: e.target.nok.value,
+                nok_phone: e.target.nok_phone.value,
+                bank: e.target.bank.value,
+                acc_no: e.target.acc_no.value,
+                accountOfficer: e.target.accountOfficer.value,
+                ["User ID"]: e.target.userid.value,
+                ["User name"]: e.target.username.value,
+                account_type: e.target.account_type.value,
+                Stage: 0,
+                registerdBy: this.props.admin
+            }
+
+            this.generateDueDates(e.target.regdate.value, e.target.fullname.value, e.target.username.value, e.target.phone.value)
+
+
+            firebaseDB.ref('investors').push().set(userDetails).then(()=>{
+                this.setState({newlyRegedUsername: userDetails["User name"]})
+
+                // this.sendWelcomingMessage(e.target.phone.value)
+
+
+                this.setState({isLoading: false})
+                this.props.alert('positive', 'Registered')
+                document.querySelector('form').reset()
+
+                // if(userDetails["EMAIL ADDRESS"]==='') {
+                    
+                
+                // }else {
+                //     this.sendWelcomingMail(userDetails.Name, userDetails.invplan, userDetails["EMAIL ADDRESS"])
+                // }
+
+            }).catch(err=>{
+                this.setState({isLoading: false})
+                this.props.alert('negative', `Registration failed, ${err.message}`)
+            })
+        }
+    }
+
+    sendWelcomingMessage = (fullname, username, number) => {
+        const usernameArray = username.split('')
+        const newUsername = []
+        usernameArray.forEach(e=>{
+            const integer = parseInt(e)
+            if(integer>=0){
+                newUsername.push(e)
+                console.log(newUsername)
+            }
+        })
+        if(parseInt(newUsername.join(''))>4365){
+
+            const dueDates = this.state.dueDates
+
+            let dates = ''
+            dueDates.forEach(date=>{
+                dates+=` ${date}, `
+            })
+
+            console.log(dates, number)
+            const data = `sender=FSP Nigeria&to=${number}&message=Hello ${fullname}, your user name is ${username}, and
+            your due dates are: ${dates}%20SMS&type=0&routing=5&token=ncGtBP4FAd6V5Jv81aoUl7S3sGIVX3e0XaKHGyEvfSifpMnu4IZaHX6FCD0mJbbpN2WUS7xgAC8EDdYis8ZqbhdqdbKAU4z0KV1b`;
+
+            const xhr = new XMLHttpRequest()
+
+            const thisPointer = this
+            xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+                console.log(this.responseText);
+                console.log(this.responseType);
+                if(this.response.includes('"error":true')){
+                    thisPointer.props.alert('negative', 'Unable to send due dates')
+                }else {
+                    thisPointer.props.alert('positive', 'Due dates sent successfully')
+                }
+            }
+            });
+
+            xhr.open("POST", "https://cors-anywhere.herokuapp.com/https://smartsmssolutions.com/api/json.php")
+            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+            xhr.send(data)
+
+
+        }else {
+
+
+            this.props.alert('negative', 'Due dates not sent')
+
+
+        }
+
+        
+    }
+
+    sendWelcomingMail = (name, invplan, email) => {
+        this.getHTMLCode(name, invplan)
+        this.setState({isLoading: true})
+        fetch('http://localhost:3001/send_mail', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+            mail: email,
+            subject: 'Welcome to FSP',
+            text: 'Welcome to Freedom Synergy Pro',
+            html: this.state.html
+        })
+        }).then(e=>{
+            console.log(e)
+            this.setState({isLoading: false})
+            document.querySelector('form').reset()
+            this.props.alert('positive', 'Registered successfully')
+        }).catch(e=>{
+            this.props.alert('negative', `${e.message} email, but registerd successfully`)
+            this.setState({isLoading: false})
+        })    
+    }
+
+
+    registerPremium = (e) => {
+        e.preventDefault()
+
+        const userDetails = {
+            Name: e.target.fullname.value,
+            ["Registration Date"]: e.target.regdate.value,
+            ['Phone Number']: e.target.phone.value,
+            bank: e.target.bank.value,
+            acc_no: e.target.acc_no.value,
+            ["User name"]: e.target.username.value,
+            capital: e.target.capital.value,
+            dueDate: this.state.dueDate,
+            dueDate2: this.state.dueDate2,
+            percentage: e.target.percentage.value,
+            registerdBy: this.props.admin
+        }
+
+        firebaseDB.ref('investors').push().set(userDetails).then(()=>{
+                this.setState({isLoading: false})
+                this.props.alert('positive', 'Registered')
+                document.querySelector('form').reset()
+        }).catch(err=>{
+            this.setState({isLoading: false})
+            this.props.alert('negative', `Registration failed, ${err.message}`)
+        })
+
+    }
+
+    changeForm = () => {
+        if(this.state.isPremium){
+            this.setState({isPremium: false})
+        }else {
+            this.setState({isPremium: true})
+        }
+    }
+
+    editDate = () => {
+        this.setState({dueDate: '', editDate: true})
+        console.log(this.state.dueDate)
+    }
+
+    calculateReturn = (e) => {
+        const percentage = parseFloat(e.target.value)
+        const invReturn = parseInt(this.state.capital*(percentage/100))+parseInt(this.state.capital)
+        this.setState({invReturn})
+    }
+
+    filterList = (e) => {
+        this.setState({
+            search2: e.target.value.toLowerCase(),
+        })
+    }
+
+    
+    render() {
+        console.log(this.state.age)
+        const filtereList = this.state.investors.filter(investor=>{
+            if(investor.Name){
+                return investor.Name.toLowerCase().includes(this.state.fullname.toLowerCase())
+            }
+        })
+    
+        const filteredOfficerList = this.state.marketers.filter(e=>{
+            if(e.NAME.toLowerCase().includes(this.state.search2.toLowerCase()) || e.USERNAME.toLowerCase().includes(this.state.search2.toLowerCase())){
+                return e
+            }
+        })
+        return (
+            <Fade>
+                <div className="register">
+                    <h2 className="heading2">Register</h2>
+                    {
+                        this.state.isPremium?
+                        <div className="form-type">
+                            <button onClick={this.changeForm} className="regular">Regular</button>
+                            <button onClick={this.changeForm} className="premium bclicked">Premium</button>
+                        </div>:
+                        <div className="form-type">
+                            <button onClick={this.changeForm} className="regular bclicked">Regular</button>
+                            <button onClick={this.changeForm} className="premium">Premium</button>
+                        </div>
+                    }
+                    {
+                        this.state.isPremium?
+                        <Bounce left>
+                            <form className="form premium_form" onSubmit={this.registerPremium}>
+                                <input name="fullname" required placeholder="Fullname"/>
+                                <input name="phone" required placeholder="Phone number"/>
+                                <input name="username" required placeholder="Username"/>
+                                <input name="bank"  placeholder="Bank"/>
+                                <input name="acc_no"  placeholder="Account number"/>
+                                <input name="regdate" required type="date"/>
+                                <input name="capital" onChange={(e)=>this.setState({capital: e.target.value})} required type="number" placeholder="Capital"/>
+                                <div className="pnr">
+                                    <input style={{width: '5rem'}} name="percentage" onChange={this.calculateReturn} required placeholder="Percentage"/>
+                                    <h2> ₦ {this.state.invReturn}</h2>
+                                </div>
+                                
+                                <div className="due_date">
+                                    <Bounce>
+                                        <p style={{fontSize: '2rem'}}>Due Date: {this.state.dueDate}</p>
+                                        <p style={{fontSize: '2rem'}}>Due Date2: {this.state.dueDate2}</p>
+                                    </Bounce>
+                                    {
+                                        this.state.editDate?
+                                        <Bounce>
+                                            <input name="dueDate" style={{width: '15rem', height: '1rem', margin: '0 1rem'}} onChange={(e)=>this.setState({dueDate: e.target.value})} required type="date"/>
+                                            <input name="dueDate" style={{width: '15rem', height: '1rem', margin: '0 1rem'}} onChange={(e)=>this.setState({dueDate2: e.target.value})} type="date"/>
+                                        </Bounce>:null
+                                    }
+                                    <div className="editbtn" onClick={this.editDate}>Edit</div>
+                                </div>
+                                <div style={{marginTop: '2rem'}} className="cta">
+                                    <PrimaryBtn title={'Register'}/>
+                                    {
+                                        this.state.isLoading?
+                                        <img className="loader" src={require('../img/loader.jpeg')}/>:null
+                                    }
+                                </div>
+                            </form>
+                        </Bounce>:
+                        <Bounce right>
+                            <div>
+                            <form className="form" onSubmit={this.registerUser}>
+                                <input name="fullname" required placeholder="Fullname" onFocus={()=> this.setState({isFocused: true})} onChange={(e)=> this.setState({fullname: e.target.value})} />
+                                {
+                                    this.state.isFocused?
+                                    <Fade top duration={1000}>
+                                        <div className="invs">
+                                            {
+                                                filtereList.map(investor=>{
+                                                    return <div className="inv">
+                                                        <p className='username'>{investor["User name"]}</p>
+                                                        <p>{investor.Name}</p>
+                                                    </div>
+                                                })
+                                            }
+                                    </div></Fade>:null
+                                }
+                                <input name="email" placeholder="Email address" type="email"/>
+                                <input name="address" placeholder="Address"/>
+                                <label style={{fontSize: '1.2rem'}}>
+                                    Date of Birth
+                                    <input style={{display: 'block'}} name="birth" onChange={this.getAge} placeholder="date of birth" type="date"/>
+                                </label>
+                                <label style={{fontSize: '1.2rem'}}>
+                                    Registration Date
+                                    <input style={{display: 'block'}} name="regdate" required placeholder="reg date" type="date"/>
+                                </label>
+                                <label style={{fontSize: '1.2rem'}}>
+                                    Form Date
+                                    <input style={{display: 'block'}} name="formdate" required placeholder="Form date" type="date"/>
+                                </label>
+                                <input name="age" value={this.state.age} placeholder="Age" type="number"/>
+                                {/* <label>
+                                    Gender
+                                    <select name="gender">
+                                        <option>male</option>
+                                        <option>female</option>
+                                        <option>prefer not to mention</option>
+                                    </select>
+                                </label> */}
+
+                                <input name="phone" required placeholder="Phone no" type="number"/>
+                                <input name="nok" placeholder="Next of kin's name"/>
+                                <input name="nok_phone" placeholder="Next of kin's phone no" type="number"/>
+                                <input name="bank" placeholder="Bank name"/>
+                                <input onChange={this.getAccountName} name="acc_no" placeholder="Account no" type="number"/>
+                                {
+                                    this.state.gettingAccName?
+                                    <img className="loader" style={{width: '2rem', padding:'2rem'}} src={require('../img/loader.jpeg')}/>:
+                                    <span style={{fontWeight: 900}}>{this.state.accountName}</span>
+                                }
+                                <input name="userid" placeholder="User ID"/>
+                                {
+                                    this.state.userExists?
+                                    <label >
+                                        <input value={this.state.usernae} name="username" style={{border: '1px solid red'}} onChange={this.checkUsername} placeholder="User Name"/>
+                                        <p style={{color:'red'}}>Usmername already exists</p>
+                                    </label>:
+                                    <input value={this.state.username} name="username" onChange={this.checkUsername} placeholder="User Name"/>
+                                }
+                                
+                                <select name="account_type">
+                                    <option value="basic">Basic</option>
+                                    <option value="dnt">Don't touch</option>
+                                </select>
+                                <div className="officer-container">
+                                    <input onChange={this.filterList} className="input in2" name="accountOfficer" placeholder="Account officer"/>
+                                    <div className="listInp">
+                                    
+                                        {
+                                            filteredOfficerList.map(e=>{
+                                                return (
+                                                    <div className="inpList" onClick={()=> {
+                                                        if(e.USERNAME){
+                                                            document.querySelector('.in2').value=e.USERNAME
+                                                        }else {
+                                                            document.querySelector('.in2').value=e.NAME
+                                                        }
+                                                    }}>
+                                                        <span>{e.USERNAME}</span>
+                                                        <p>{e.NAME}</p>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+
+                                <label>
+                                    Plan Type
+                                    <select style={{margin: '1rem 0'}} name="planType" required onChange={(e)=> this.setState({planType: e.target.value})}>
+                                        <option value="">Select an option</option>
+                                        <option value="yakata">YAKATA</option>
+                                        <option value="bumper">BUMPER</option>
+                                    </select>
+                                </label>
+
+                                <label>
+                                    Investment plan
+                                    {
+                                        this.state.planType==='yakata'?
+                                        <select name="yakata" required>
+                                            <option value="p_50k">50k plan</option>
+                                            <option value="p_150k">150k plan</option>
+                                            <option value="p_250k">250k plan</option>
+                                            <option value="p_350k">350k plan</option>
+                                        </select>:
+                                        this.state.planType==='bumper'?
+                                        <select name="bumper" required>
+                                            <option value="p_70k">70k plan</option>
+                                            <option value="p_140k">140k plan</option>
+                                            <option value="p_210k">210k plan</option>
+                                            <option value="p_280k">280k plan</option>
+                                            <option value="p_420k">420k plan</option>
+                                            <option value="p_490k">490k plan</option>
+                                        </select>:null
+                                    }
+                                </label>
+                                
+                                <div className="cta">
+                                    {
+                                        this.state.isLoading?
+                                        <img className="loader" src={require('../img/loader.jpeg')}/>:
+                                        <PrimaryBtn title={'Register'}/>
+                                    }
+                                </div>
+                            </form>
+                            </div>
+                        </Bounce>
+                    }
+                </div>
+            </Fade>
+        );
+    }
+}
+
+export default Register;

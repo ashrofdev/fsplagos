@@ -1,0 +1,39 @@
+.issue {
+
+    &  .body {
+
+        &  input{
+            display: block;
+            padding: 1rem;
+            width: 95%;
+            margin: 1rem 0;
+            outline: none;
+            border: 1px solid $lightbordercolor;
+        }
+        &  textarea {
+            height: 15rem;
+            padding: 1rem;
+            width: 95%;
+            margin: 1rem 0;
+            outline: none;
+            border: 1px solid $lightbordercolor;
+        }
+  
+        &  .cta {
+            text-align: right;
+            width: 95%;
+            padding: 2rem;
+
+            &  button {
+                padding: 1rem 2rem;
+                border-radius: .5rem;
+                border: none;
+                background-color: rgb(85, 190, 250);
+                color: $white;
+                &:hover {
+                    background-color: rgb(61, 132, 173)
+                }
+            }
+        }
+    }
+}

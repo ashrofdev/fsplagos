@@ -1,0 +1,149 @@
+.register {
+    transition: all 1s ease-out;
+    width: 25vw;
+    position: absolute;
+    top: 10vh;
+    right: -24.5vw;
+    background-color: $white;
+    box-shadow: -1px 1px 5px rgba(88, 88, 88, 0.212);
+
+    &  .regheader {
+        background-color: rgba(174, 217, 253, 0.151);;
+        font-size: 1.3rem;
+        border-bottom: 1px solid $lightbordercolor;
+    }
+
+    &  .container {
+            position: relative;
+
+        &  .regform {
+            height: 80vh;
+            height: 100%;
+            z-index: 10;
+    
+            padding: 2rem;
+    
+            &  input, select {
+                padding: 1rem;
+                width: 90%;
+                margin: 1rem auto;
+                border: 1px solid $lightbordercolor;
+                outline: none;
+                transition: all .5s;
+                backface-visibility: hidden;
+                &:focus {
+                    border-color: transparent;
+                    border-bottom: 1px solid $primary-blue;
+                }
+            }
+    
+            &  .fieldset {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 0;
+                margin: 0;
+                text-align: left;
+
+                &  input {
+                    padding: 0;
+                    margin: 0;
+                    width: min-content;
+                    margin: 1rem;
+                }
+                &  label {
+                    padding: 0;
+                    margin-right: 2rem;
+                    cursor: pointer;
+                }
+            }
+
+            &  .officer {
+                position: relative;
+                width: 95%;
+                box-shadow: 1px 1px 1rem rgba(0, 0, 0, 0.13);
+                overflow: hidden;
+    
+                
+    
+                &  input {
+                    margin-bottom: 0;
+                    width: 95%;
+                    outline: none;
+                    margin: 0;
+                }
+    
+                &  ul {
+                    width: 100%;
+                    background-color: white;
+                    max-height: 10rem;
+                    border-radius: .5rem;
+                    list-style: none;
+                    overflow: scroll;
+    
+                    &  li {
+                        padding: 1rem;
+                        border-bottom: 1px solid $lightbordercolor;
+                        cursor: pointer;
+                        &:hover{
+                            background-color: rgba(174, 217, 253, 0.151);
+                        }
+                        &:active{
+                            background-color: $light-primary-blue;
+                        }
+                    }
+                }
+            }
+            &  .cta {
+                border-top: 1px solid $lightbordercolor;
+                margin-top: 5rem;
+                padding: 1rem 0;
+                text-align: right;
+                width: 95%;
+                
+    
+                &  .btn {
+                    padding: 1rem 3rem;
+                    border-radius: .5rem;
+                    border: none;
+                    background-color: rgba(112, 187, 248, 0.151);;
+    
+                    &:hover {
+                        background-color: $primary-blue;
+                        color: $white;
+                    }
+                }
+            }
+    
+            
+        }
+        &  .toggle {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-100%, -100%) rotate(180deg);
+            z-index: 1;
+            padding: 1rem;
+            background-color: $white;
+            border: none;
+            box-shadow: -1px 1px 5px rgba(110, 110, 110, 0.185);
+            background-color: $secondary-blue;
+            color: $white;
+            border-radius: 5rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+
+
+        }
+        
+        .icon{
+            transform: translate(-100%, -100%);
+            border-radius: 5rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+}
+.close{
+    right: 0;
+}

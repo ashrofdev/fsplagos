@@ -1,0 +1,327 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+// defining the value of 1rem
+html {
+  font-size: 62.5%;
+  color: $black;
+  font-family: sans-serif;
+
+  @media only screen and (max-width: $bplargest) {
+    font-size: 51.67%;
+  }
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $light-background;
+  overflow: hidden;
+  
+}
+.font {
+  color: $font;
+  font-size: 2rem;
+}
+
+.unavailable {
+  display: block;
+  font-size: 1.5rem;
+  color:  $font;
+  text-align: center;
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(-720deg);
+  }
+  100% {
+    transform: rotate(0) scale(1.5);
+  }
+}
+@keyframes status {
+  0% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+.loader {
+  animation: loader infinite alternate .5s;
+}
+.alert {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  border-radius: .5rem;
+  background-color: $black;
+  color: $white;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+
+  &  .message {
+      padding: 0 1rem;
+  }
+
+}
+
+.modal {
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.808);
+  color:  $white;
+  width: 30vw;
+  box-shadow: .5rem .5rem 2rem rgb(0, 0, 0);
+
+  &  .header {
+    font-size: 18px;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid black;
+
+    &  .font {
+      color: rgb(6, 250, 6);
+      font-size: 2.5rem;
+      margin-right: 1rem;
+    }
+    &  .text {
+      font-size: .8rem;
+      
+      &  p {
+        font-size: 1.8rem;
+        letter-spacing: .6rem;
+      }
+      &  span {
+        color: rgb(234, 250, 6);
+        border: 1px solid currentColor;
+        border-radius: 10rem;
+        padding: 0 8px;
+      }
+    }
+  }
+  &  .content {
+    width: 100%;
+    padding: 2rem;
+
+    &  input {
+      padding: 1rem;
+      font-size: 1.7rem;
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid $white;
+      outline: none;
+      color: $white;
+
+      &::placeholder {
+        color: rgb(189, 189, 189);
+      }
+
+      &:focus {
+
+        &::placeholder {
+          transform: translateY(-80%);
+        }
+      }
+    }
+  }
+}
+
+
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  border-radius: 18px;
+  background-color: black;
+  color: $white;
+  border: none;
+
+  &:hover {
+    color: red;
+  }
+}
+
+.yakata {
+  width: 70vw;
+
+  &  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    margin-bottom: 5rem;
+
+    &  .balance {
+
+      &  span {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  &  .inv {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    font-size: 1.4rem;
+    border-bottom: 1px solid rgba(197, 197, 197, 0.253);
+    border-top: 1px solid rgba(197, 197, 197, 0.253);
+
+
+    &  p {
+    }
+  }
+
+  &  .cta {
+    margin-top: 5rem;
+    &  button {
+      margin-right: 2rem;
+    }
+  }
+}
+
+.manuals {
+  position: fixed;
+  top: 2rem;
+  right: 0;
+  z-index: 1000000000000000;
+  width: 30vw;
+
+
+  &  .manual {
+    padding: 1rem 2rem;
+    background-image: linear-gradient(to right bottom, rgb(8, 102, 224), rgb(104, 168, 253));
+    color: white;
+    border-radius: .5rem;
+    box-shadow: 2px 2px 1rem rgba(0, 0, 0, 0.603);
+    margin: 1rem 0;
+
+    &  h3 {
+      font-size: 1.5rem;
+    }
+
+    &  ul {
+      list-style: none;
+      padding: .5rem 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: .5rem;
+
+      &  li {
+        padding: .3rem 0;
+        font-size: 1.2rem;
+        &  .title {
+          font-weight: 900;
+        }
+      }
+    }
+    &  .cta {
+      display: flex;
+      align-items: center;
+      padding: .5rem 0;
+
+      &  button {
+        padding: .8rem 1.5rem;
+        background-color: transparent;
+        border: 1px solid currentColor;
+        border-radius: .5rem;
+        margin-right: 2rem;
+
+
+      }
+      &  .decline {
+        color: rgb(255, 74, 74);
+        &:hover {
+          background-color: rgba(255, 85, 85, 0.623);
+          color: black;
+          border: none;
+        }
+      }
+      &  .accept {
+        color: rgb(5, 236, 44);
+        &:hover {
+          background-color: rgba(132, 255, 148, 0.623);
+          color: black;
+          border: none;
+        }
+      }
+    }
+  }
+}
+
+.invv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &  p {
+    font-size: 1.5rem;
+  }
+}
+
+.activitymodal {
+  background-color: $secondary-blue;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.507);
+  padding: 1rem 2rem;
+  color: $white;
+  width: 30rem;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 100000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row-reverse;
+
+  &  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: .5rem;
+    
+  }
+  &  p {
+    font-size: 1.3rem;
+    font-style: italic;
+    opacity: .7;
+    margin-top: 1rem;
+  }
+  &  .bell {
+    margin-right: 1.5rem;
+    padding: .6rem;
+    transform: rotate(-25deg);
+    font-size: 2rem;
+  }
+}
+.deploymessage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black;
+  padding: .5rem;
+  font-size: 1.2rem;
+  color: $white;
+}
