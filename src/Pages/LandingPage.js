@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { NavLink, useHistory } from 'react-router-dom';
 import { firebaseAuth } from '../firebase';
+import logo from '../img/logo.png'
 
 const LandingPage = () => {
     const history = useHistory()
@@ -19,6 +20,10 @@ const LandingPage = () => {
     }
     return (
         <div className="landing">
+            <div className="head">
+                <img src={logo}/>
+                <h2>Login to FSPLAGOS</h2>
+            </div>
             
             <form className="signin" onSubmit={signin}>
                 <p>Enter Your email address and password</p>
