@@ -20,7 +20,11 @@ const Payments = ({togglePayments}) => {
     const handleChange = (value, payment) => {
         console.log(payment)
         const payRoll = []
+        const pays = payments
+        const index = payments.findIndex(p => payment===p)
         if(value){
+            pays[index].selected=true
+
             payRoll.push({
                 "BeneficiaryName":payment.bankName,
                 "BankCode":payment.bankCode,
@@ -31,10 +35,12 @@ const Payments = ({togglePayments}) => {
                 "stage": payment.keStagey,
             })
         }else {
+            pays[index].selected=true
             const position = payRoll.findIndex(e=> e.AccountNo===payment.acc_no.trim())
             payRoll.splice(position, 1)
         }
         setPayRoll(payRoll)
+        setPayments(pays)
     }
     const generateSpreadSheet = () => {
         
@@ -51,19 +57,21 @@ const Payments = ({togglePayments}) => {
     const declineSelected = () => {
         const payList = payRoll
         
-        payList.forEach(pay=> {
+        payments.forEach(pay=> {
             const indexPayList = payList.findIndex(payment=> payments===pay)
-            payList.splice(indexPayList, 1)
-            firebaseDB.ref('payments').child(pay.key).remove().then(()=>{
+            // payList.splice(indexPayList, 1)
+            if(pay.selected){
+                firebaseDB.ref('payments').child(pay.key).remove().then(()=>{
 
-                // const paymentss = []
-                // firebaseDB.ref('payments').on('value', snapshot => {
-                //     snapshot.forEach(payment => {
-                //         paymentss.push({...payment.val(), key: payment.key})
-                //     })
-                //     setPayments(paymentss)
-                // })
-            })
+                    // const paymentss = []
+                    // firebaseDB.ref('payments').on('value', snapshot => {
+                    //     snapshot.forEach(payment => {
+                    //         paymentss.push({...payment.val(), key: payment.key})
+                    //     })
+                    //     setPayments(paymentss)
+                    // })
+                })
+            }
         })
     }
 
@@ -95,7 +103,11 @@ const Payments = ({togglePayments}) => {
                    {
                        payments.map((payment, i)=>{
                             return <div className="roll">
-                                <input onChange={(e)=> handleChange(e.target.checked, payment)} type="checkbox"/>
+                                {
+                                    payment.selected?
+                                    <input checked={true} onChange={(e)=> handleChange(e.target.checked, payment)} type="checkbox"/>:
+                                    <input onChange={(e)=> handleChange(e.target.checked, payment)} type="checkbox"/>
+                                }
                                 {/* <p>{i+1}</p> */}
                                 <p>{payment.dateAdded.slice(0, 10)}</p>
                                 <p>{payment.Name}</p>
