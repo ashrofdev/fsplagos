@@ -37,6 +37,7 @@ const HomePage = () => {
                                 <Route path="/encashments" component={Encashments}/>
                                 <Route path="/" component={Table}/>
                             </Switch>
+                        <Register/>
                     </div>
                 </div>
             </BrowserRouter>
