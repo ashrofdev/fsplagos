@@ -37,6 +37,7 @@ const Payments = ({togglePayments}) => {
         setPayRoll(payRoll)
     }
     const generateSpreadSheet = () => {
+        
         try {
             json2excel({
                 data:payRoll,

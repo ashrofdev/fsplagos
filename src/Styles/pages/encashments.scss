@@ -1,0 +1,107 @@
+.encashments {
+    width: 50vw;
+
+    
+    &  .header {
+        margin: 2rem 0;
+    }
+
+    &  .list {
+        max-height: 70vh;
+        padding: 2rem;
+        overflow: scroll;
+
+        &  .item {
+            display: grid;
+            grid-template-columns: repeat(2, 3rem) repeat(5, 1fr);
+            align-items: center;
+
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid $lightbordercolor;
+            box-shadow: 1px 1px 5px rgb(173, 173, 173);
+            background-color: $white;
+            border-radius: .5rem;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+
+            &  .amount {
+                justify-self: flex-end;
+                transition: all .3s .1s;
+            }
+           
+
+            &  .sidebtn {
+                background-color: transparent;
+                border: none;
+                color: $primary-blue;
+                position: absolute;
+                top: 1.7rem;
+                right: 1rem;
+                transform: translate(100%,-50%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all .4s;
+                &:hover{
+                    color: red;
+                }
+            }
+            &  .delete {
+                color: red;
+                margin-left: 5rem;
+                font-weight: 100;
+                transition: all .8s;
+            }
+
+            &  .form {
+                grid-column: 7/8;
+                display: flex;
+                margin: 1rem 0;
+                &  input {
+                    padding: .5rem;
+                }
+                &  button {
+                    margin-left: -15%;
+                    background-color: transparent;
+                    border: none;
+                    font-weight: 900;
+                    color: $primary-blue;
+
+
+                    &:hover {
+                        margin-left: -10%;
+                        color: $secondary-blue;
+                    }
+                }
+            }
+
+            &:hover  {
+                .amount {
+                    transform: translateX(-70%);
+                }
+                .sidebtn {
+                    transform: translate(-100%,-50%);
+                    opacity: 1;
+                    visibility: visible;
+                }
+                &  .delete {
+                    transform: translate(20%,-50%);
+                }
+            }
+        }
+    }
+
+    &  .cta {
+        text-align: right;
+        padding: 2rem;
+        &  button {
+            padding: 1rem 3rem;
+            background-color: $primary-blue;
+            border: none;
+            border-radius: .5rem;
+            box-shadow: 1px 1px 5px rgb(179, 179, 179);
+            color: $white;
+        }
+    }
+}

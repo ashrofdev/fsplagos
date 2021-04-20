@@ -48,6 +48,24 @@
             border: none;
             border-bottom: 1px solid currentColor;
         }
+
+        &  .right {
+            color: $white;
+            padding: 1rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all .5s;
+
+            &  a {
+                color: $white;
+            }
+
+            &:hover {
+                border: 1px solid currentColor;
+                color: $primary-orange;
+            }
+        }
     }
 
     &  .welcome {
