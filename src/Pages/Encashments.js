@@ -37,7 +37,9 @@ const Encashments = () => {
     }
 
     const deleteEncashment = (key) => {
-        firebaseDB.ref('encashments').child(key).remove()
+        firebaseDB.ref('encashments').child(key).remove().then(e=> {
+            getEncashments()
+        })
     }
 
     const downloadSpreadsheet = () => {
