@@ -22,13 +22,17 @@ const Table = () => {
     const [investor, setInvestor] = useState({})
     const [rois, setRois] = useState({})
     const [activeIssues, setActiveIssues] = useState(0)
+    const [today, setToday] = useState(0)
+    const [thisweek, setThisweek] = useState(0)
+    const [nextweek, setNextweek] = useState(0)
 
         // getRoi()
-        useEffect(()=>{
+        useEffect(()  =>{
             getInvestors()
             if(investor.key){
                 firebaseDB.ref('investors').child(investor.key).on('value', snapshot => {
                     setInvestor({...snapshot.val(), key: snapshot.key})
+                    
                 })
             }
         },[])
@@ -42,6 +46,17 @@ const Table = () => {
         })
         
     })
+
+    const getFilterNumbers = () => {
+  
+
+        investors.forEach(investor=>{
+           
+            
+            
+            
+        })
+    }
 
     const getIssues = (investors) => {
         let activeIssues = 0
@@ -75,7 +90,7 @@ const Table = () => {
     }
 
     const getInvestors = async () => {
-        await firebaseDB.ref('investors').limitToLast(10).on('value',snapshot => {
+        await firebaseDB.ref('investors').limitToLast(100).once('value').then(snapshot => {
             const investors = []
             const issues = []
             const email = []
@@ -109,6 +124,7 @@ const Table = () => {
                         getIssues(investors)
                     }
                     generateDueDate(investors, roiss)
+                    getFilterNumbers()
                 })
 
                 
@@ -123,6 +139,9 @@ const Table = () => {
     const generateDueDate = (investors, roiss) => {
         console.log(roiss, 'hghghghghghghghghg')
         const inv = []
+        let ttoday = 0
+        let tthisweek = 0
+        let tnextweek = 0
         investors.forEach(investor => {
             const regDate = investor["Registration Date"]
             const days = 30*(parseInt(investor.Stage)+1)
@@ -143,6 +162,14 @@ const Table = () => {
             const roi = roiss[investor.invplan]
             console.log(roi)
 
+            if(dueDate.isSame(moment(), 'day')){
+                ttoday+=1
+            }else if(dueDate.isSame(moment(), 'week')){
+                tthisweek+=1
+            }else if(dueDate.isSame(moment().add(1, 'week'), 'week')){
+                tnextweek+=1
+            }
+
             inv.push({
                 ...investor,
                 dueDate,
@@ -153,6 +180,9 @@ const Table = () => {
         })
         setInvestors(inv)
         setFilteredInvestors(inv)
+        setToday(ttoday)
+        setThisweek(tthisweek)
+        setNextweek(tnextweek)
     }
 
     const openDashboard = (investor) => {
@@ -213,11 +243,11 @@ const Table = () => {
             </div>
             <nav>
                 <ul>
-                    <li onClick={()=> filterTable('all')}>All</li>
-                    <li onClick={()=> filterTable('today')}>Due Today</li>
-                    <li onClick={()=> filterTable('thisweek')}>Due This week</li>
-                    <li onClick={()=> filterTable('nextweek')}>Due Next week</li>
-                    <li onClick={()=> filterTable('issues')}>Issues <span>{activeIssues}</span></li>
+                    <li onClick={()=> filterTable('all')}>All </li>
+                    <li onClick={()=> filterTable('today')}>Due Today <span>{today}</span></li>
+                    <li onClick={()=> filterTable('thisweek')}>Due This week <span>{thisweek}</span></li>
+                    <li onClick={()=> filterTable('nextweek')}>Due Next week <span>{nextweek}</span></li>
+                    <li onClick={()=> filterTable('issues')}>Issues <span style={{backgroundColor: 'rgb(255, 102, 0)'}}>{activeIssues}</span></li>
                 </ul>
             </nav>
 

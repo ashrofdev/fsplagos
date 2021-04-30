@@ -19,7 +19,7 @@ const Dashboard = ({openDashboard}) => {
                     <div className="close" onClick={openDashboard}></div>
                     <div className="container">
                         <header>
-                            <button>{"<"} BACK</button>
+                            <button onClick={openDashboard}>{"<"} BACK</button>
                         </header>
                         <BrowserRouter>
                             <main>

@@ -5,7 +5,6 @@ import {json2excel} from 'js2excel';
 
 const Payments = ({togglePayments}) => {
     const [payments, setPayments] = useState([])
-    const [payRoll, setPayRoll] = useState([])
 
     useEffect(()=> {
         firebaseDB.ref('payments').on('value', snapshot => {
@@ -19,30 +18,29 @@ const Payments = ({togglePayments}) => {
 
     const handleChange = (value, payment) => {
         console.log(payment)
-        const payRoll = []
         const pays = payments
         const index = payments.findIndex(p => payment===p)
         if(value){
             pays[index].selected=true
 
-            payRoll.push({
-                "BeneficiaryName":payment.bankName,
-                "BankCode":payment.bankCode,
-                "AccountNo":payment.acc_no.trim(),
-                "Amount": payment.nextEarningAmount,
-                "Narration":payment.naration,
-                "key": payment.key,
-                "stage": payment.keStagey,
-            })
         }else {
             pays[index].selected=true
-            const position = payRoll.findIndex(e=> e.AccountNo===payment.acc_no.trim())
-            payRoll.splice(position, 1)
         }
-        setPayRoll(payRoll)
         setPayments(pays)
     }
     const generateSpreadSheet = () => {
+        const payRoll = []
+        payments.forEach(e=> {
+            if(e.selected){
+                payRoll.push({
+                    "BeneficiaryName":e.bankName,
+                    "BankCode":e.bankCode,
+                    "AccountNo":e.acc_no.trim(),
+                    "Amount": e.nextEarningAmount,
+                    "Narration":e.naration,
+                })
+            }
+        })
         
         try {
             json2excel({
@@ -55,10 +53,8 @@ const Payments = ({togglePayments}) => {
     }
 
     const declineSelected = () => {
-        const payList = payRoll
         
         payments.forEach(pay=> {
-            const indexPayList = payList.findIndex(payment=> payments===pay)
             // payList.splice(indexPayList, 1)
             if(pay.selected){
                 firebaseDB.ref('payments').child(pay.key).remove().then(()=>{
@@ -76,11 +72,11 @@ const Payments = ({togglePayments}) => {
     }
 
     const update = () => {
-        payRoll.forEach(roll=> {
-            firebaseDB.ref('investors').child(roll.key).update({
-                Stage: parseInt(roll.stage)+1
-            })
-        })
+        // payRoll.forEach(roll=> {
+        //     firebaseDB.ref('investors').child(roll.key).update({
+        //         Stage: parseInt(roll.stage)+1
+        //     })
+        // })
     }
 
     return (
