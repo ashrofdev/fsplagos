@@ -568,6 +568,10 @@ const Register = () => {
     // declearing hooks
     const [officer, setOfficer] = useState(" ")
     const [bankCode, setBankCode] = useState("044")
+    const [username, setUsername] = useState("FSPY")
+    const [accType, setAccType] = useState("bT1")
+    const [regCounter, setRegCounter] = useState(0)
+    const [duedates, setDuedates] = useState([])
     const [bankName, setBankName] = useState("Enter bank details to reveal name...")
     const [filteredMarketers, setfilteredMarketers] = useState(marketers)
     const [loading, setLoading] = useState(false)
@@ -576,6 +580,9 @@ const Register = () => {
         type: 'positive',
         message: ''
     })
+    useEffect(()=> {
+      getRegDate()
+    }, [])
 
     useEffect(()=> {
       if(alert.status===true){
@@ -631,7 +638,7 @@ const Register = () => {
       setLoading(true)
       e.preventDefault()
       const userDetails = {
-        ["Registration Date"]: moment().format("DD-MM-YYYY"),
+        ["Registration Date"]: regCounter.date,
         Name: bankName,
         email: e.target.email.value,
         address: e.target.address.value,
@@ -647,11 +654,13 @@ const Register = () => {
         account_type: e.target.account_type.value,
         // planType: e.target.planType.value,
         Stage: 0,
-        lastActivityTitle: 'registration'
+        lastActivityTitle: 'registration',
+        balance: 0
       }
       firebaseDB.ref("lastUsername").once('value').then(snapshot=> {
         const username = `FSPY0${parseInt(snapshot.val().yakata)+1}`
         console.log(username)
+        // setUsername(username)
         if(bankName === 'Couldn\'t fetch bank name!'){
           setLoading(false)
           setAlert({
@@ -673,13 +682,57 @@ const Register = () => {
                 message: 'Account registered successfully'
               })
               setLoading(false)
-              document.querySelector('form').reset()
+              document.querySelector('.regform').reset()
+              setBankName("")
+              setOfficer("")
+
+              // send duedate as sms
+              sendDuedates(userDetails.phone, username)
+            })
+            firebaseDB.ref('regCounter').update({
+              accounts: regCounter.accounts+1
             })
           })
         }
 
       })
       
+    }
+
+    const getRegDate = () => {
+      firebaseDB.ref('regCounter').on('value', snapshot => {
+        const regCounter = snapshot.val()
+        if(regCounter.accounts<=30){
+          setRegCounter(regCounter)
+          getDuedates(regCounter.date)
+        }else {
+          const newDate = moment(regCounter.date, "DD-MM-YYYY").businessAdd(1, 'day').format("DD-MM-YYYY")
+          firebaseDB.ref('regCounter').update({
+            accounts: 0,
+            date: newDate
+          }).then(()=>{
+            // getRegDate()
+          })
+          
+        }
+      })
+    }
+
+    const getDuedates = (regDate) => {
+      const dueDates = []
+      for(let i = 1; i<=8; i++){
+        const date = moment(regDate, "DD-MM-YYYY").businessAdd((i*30), 'day').format("DD-MM-YYYY")
+        dueDates.push(date)
+      }
+      setDuedates(dueDates)
+    }
+
+    const sendDuedates = ( phone, username ) => {
+      const dates = duedates.join(", ")
+      fetch(`https://portal.nigeriabulksms.com/api/?username=freedomsynergypro@gmail.com&password=fsp003&message=Hello ${bankName}, your user name is ${username}, and
+        your due dates are: ${dates}. Follow this link to access your dashboard https://freedomsynergypro.com/ &sender=FSP&mobiles=${phone}&type=message`).then(e=>{
+        console.log(e.json())
+      })
     }
 
     return (
@@ -707,23 +760,47 @@ const Register = () => {
 
                 <div className="">
                     <div className="fieldset">
-                            <input id="basic" type="radio" value="yakata" name="account_type" />
-                            <label for="basic">Basic</label>
+                            <input id="bT1" type="radio" value="bT1" onChange={()=>setAccType("bT1")} name="account_type" />
+                            <label for="bT1">BT1</label>
+
+                            <input id="bT2" type="radio" value="bT2" onChange={()=>setAccType("bT2")} name="account_type" />
+                            <label for="bT2">BT2</label>
+
+                            <input id="st" type="radio" value="st" onChange={()=>setAccType("st")} name="account_type" />
+                            <label for="st">Standard</label>
                       
-                            <input id="dnt" type="radio" value="dnt" name="account_type" />
+                            <input id="dnt" type="radio" value="dnt" onChange={()=>setAccType("dnt")} name="account_type" />
                             <label for="dnt">DNT</label>
+
+                            <input id="pt1" type="radio" value="pt1" onChange={()=>setAccType("pt1")} name="account_type" />
+                            <label for="pt1">PT1</label>
+
+                            <input id="pt2" type="radio" value="pt2" onChange={()=>setAccType("pt2")} name="account_type" />
+                            <label for="pt2">PT2</label>
                     </div>
                 </div>
 
-                <select name="invplan">
-                  <option value="p_50k">NGN50,000</option>
-                  <option value="p_100k">NGN100,000</option>
-                  <option value="p_150k">NGN150,000</option>
-                  <option value="p_200k">NGN200,000</option>
-                  <option value="p_250k">NGN250,000</option>
-                  <option value="p_300k">NGN300,000</option>
-                  <option value="p_350k">NGN350,000</option>
-                </select>
+                {
+                  accType.includes("bT")?
+                  <select name="invplan">
+                    <option value="p_50k">NGN50,000</option>
+                    <option value="p_100k">NGN100,000</option>
+                    <option value="p_150k">NGN150,000</option>
+                    <option value="p_200k">NGN200,000</option>
+                    <option value="p_250k">NGN250,000</option>
+                  </select>:
+                  accType==='st' || accType==='dnt'?
+                  <select name="invplan">
+                    <option value="p_250k">NGN250,000</option>
+                    <option value="p_300k">NGN300,000</option>
+                    <option value="p_350k">NGN350,000</option>
+                    <option value="p_400k">NGN400,000</option>
+                    <option value="p_500k">NGN500,000</option>
+                  </select>:
+                  accType==='pt1'?
+                  <input placeholder="Enter amount" defaultValue="1000000" min="1000000" max="5000000" type="number" step="100000" />:
+                  <input placeholder="Enter amount" defaultValue="6000000" min="6000000" type="number" step="500000" />
+                }
 
                 <div className="officer">
                     <input value={officer} onChange={(e)=> filterOfficers(e.target.value)} type="officer"  name="aOfficer" placeholder="Account officer"/>

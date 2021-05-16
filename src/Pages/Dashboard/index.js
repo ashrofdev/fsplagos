@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Fade from 'react-reveal/Fade'
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import Details from './Details';
@@ -9,8 +9,11 @@ import Messaging from './Messaging';
 import DueDates from './DueDates';
 import Issue from './Issue';
 import Upgrade from './Upgrade';
+import { UserContext } from '../../Components/Context';
 
 const Dashboard = ({openDashboard}) => {
+
+    const investor = useContext(UserContext)
     
     return (
         <>

@@ -37,7 +37,8 @@ const Upgrade = () => {
         firebaseDB.ref('investors').child(investor.key).child('upgrade').push().set({
             date: moment().toString(),
             amount: `p_${upgradeAmount/1000}k`,
-            username:   `${investor["User name"]}(1)`
+            username:   `${investor["User name"]}`,
+            Stage: 0
         }).then(()=>{
 
         })
@@ -55,21 +56,26 @@ const Upgrade = () => {
                     <button onClick={()=> handleIncrement('+')}>+</button>
                 </div>
                 <div className="cta">
-                    <button onClick={upgrade} className="btn">Upgrade</button>
+                   {
+                       investor.Stage<2&&investor.upgrade?
+                       <button onClick={upgrade} className="btn">Upgrade</button>:
+                       <button disabled style={{opacity: .5, cursor: 'not-allowed'}} className="btn">Upgrade</button>
+                   }
                 </div>
 
                 <div className="upgrades">
                     <h2>Upgrades</h2>
                     {
-                        investor.upgrade.length<1?
+                        investor.upgrade&&investor.upgrade.length<1?
                         <p>Upgrade records will be displayed here</p>:
                         <div>
                             {
-                                investor.upgrade.map(e=>{
+                                Object.values(investor.upgrade).map(e=>{
                                     return (
                                         <div className="upgrade">
                                             <p>Date: {e.date}</p>
                                             <p>Upgrade Id: {e.username}</p>
+                                            <p>Stage: {e.Stage}</p>
                                             <p>Amount: {e.amount}</p>
                                         </div>
                                     )

@@ -7,6 +7,9 @@ import business from 'moment-business-days';
 import Payments from './Payments';
 import BulkMessaging from './BulkMessaging';
 import FontAwesome from 'react-fontawesome';
+import Issue from '../Pages/Dashboard/Issue';
+import Issues from './Issues';
+import Upgrades from './Upgrades';
 
 const Table = () => {
     const [openBoard, setOpenDashboard] = useState(false)
@@ -14,6 +17,7 @@ const Table = () => {
     const [payment, togglePayment] = useState(false)
     const [payments, togglePayments] = useState(false)
     const [issuesActive, openIssues] = useState(false)
+    const [upgradesActive, openUpgrades] = useState(false)
     const [issues, setIssues] = useState([])
     const [investors, setInvestors] = useState([])
     const [filteredinvestors, setFilteredInvestors] = useState([])
@@ -72,6 +76,7 @@ const Table = () => {
     const filterTable = (state) => {
             const filtered = investors.filter(investor=>{
                 openIssues(false)
+                openUpgrades(false)
                 
                 if(state==='today'){
                     return investor.dueDate.isSame(moment(), 'day')
@@ -82,6 +87,9 @@ const Table = () => {
                 }else if(state==='issues'){
                     openIssues(true)
                     return investor.activeIssues>0
+                }else if(state==='upgrades'){
+                    openUpgrades(true)
+                    return upgrades
                 }
 
                 return investor
@@ -90,7 +98,7 @@ const Table = () => {
     }
 
     const getInvestors = async () => {
-        await firebaseDB.ref('investors').once('value').then(snapshot => {
+        await firebaseDB.ref('investors').limitToLast(5).once('value').then(snapshot => {
             const investors = []
             const issues = []
             const email = []
@@ -98,9 +106,14 @@ const Table = () => {
                 let upgrade = []
                 if(e.val().upgrade){
                     const upgradesArray = upgrades
-                    upgrade = Object.values(e.val().upgrade)
-                    upgradesArray.push(...upgrade)
-                    setUpgrades(upgradesArray)
+                    upgrade = e.val().upgrade
+                    // upgradesArray.push(...upgrade)
+                    const ugrades = []
+                    const upArray = Object.keys(upgrade)
+                    upArray.forEach(e=>{
+                        upgrades.push({key: e, ...upgrade[e] })
+                    })
+                    setUpgrades(upgrades)
                 }
                 investors.push({...e.val(), key: e.key, upgrade})
                 email.push(e.val()["EMAIL ADDRESS"])
@@ -247,6 +260,7 @@ const Table = () => {
                     <li onClick={()=> filterTable('today')}>Due Today <span>{today}</span></li>
                     <li onClick={()=> filterTable('thisweek')}>Due This week <span>{thisweek}</span></li>
                     <li onClick={()=> filterTable('nextweek')}>Due Next week <span>{nextweek}</span></li>
+                    <li onClick={()=> filterTable('upgrades')}>Upgrades <span>{0}</span></li>
                     <li onClick={()=> filterTable('issues')}>Issues <span style={{backgroundColor: 'rgb(255, 102, 0)'}}>{activeIssues}</span></li>
                 </ul>
             </nav>
@@ -254,48 +268,10 @@ const Table = () => {
 
            {
                issuesActive?
-               <div>
-                   <div className="tablehead">
-                        <h3>S/N</h3>
-                        <h3>Title</h3>
-                        <h3>Username</h3>
-                        <h3>Capital</h3>
-                        <h3>Stage</h3>
-                        <h3>Next Earning</h3>
-                    </div>
-                    <div className="tablebody">
-                        
-                        {
-                            issues.map((investor, i) => {
-                                return <div className="inv">
-                                        <div>
-                                            {
-                                                payment?
-                                                <input type="checkbox" onChange={(e)=> pushUser(investor, e.target.checked)} />:i+1
-                                            }
-                                        </div>
-                                        <h4 onClick={()=> openDashboard(investor)}>{investor.Name}</h4>
-                                        <p>{investor["User name"]}</p>
-                                        <p>{investor.invplan}</p>
-                                        <p>{investor.Stage}</p>
-                                        {
-                                            investor.dueDate?
-                                            <p>{investor.dueDate.toString()}</p>:null
-                                        }
-                                        {
-                                            investor.issuesArray.map((issue, i)=>  <div className="issuee">
-                                                                            <p>{i+1}</p>
-                                                                            <p>{issue.title}</p>  
-                                                                            <p>{issue.comment}</p>  
-                                                                        </div>
-                                            )
-                                        }
-                                    </div>
-                            })
-                        }
-
-                    </div>
-               </div>:
+               <Issues issues={issues} openDashboard={openDashboard}/>:
+               upgradesActive?
+               <Upgrades upgrades={upgrades}/>:
+               
 
                <div>
                     <div className="tablehead">

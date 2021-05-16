@@ -33,7 +33,7 @@ const Payments = ({togglePayments}) => {
         payments.forEach(e=> {
             if(e.selected){
                 payRoll.push({
-                    "BeneficiaryName":e.bankName,
+                    "BeneficiaryName":e.Name,
                     "BankCode":e.bankCode,
                     "AccountNo":e.acc_no.trim(),
                     "Amount": e.nextEarningAmount,
@@ -72,11 +72,15 @@ const Payments = ({togglePayments}) => {
     }
 
     const update = () => {
-        // payRoll.forEach(roll=> {
-        //     firebaseDB.ref('investors').child(roll.key).update({
-        //         Stage: parseInt(roll.stage)+1
-        //     })
-        // })
+        payments.forEach(roll=> {
+            if(roll.selected){
+                firebaseDB.ref('investors').child(roll.key).update({
+                    Stage: parseInt(roll.Stage)+1
+                }).then(e=> {
+                    firebaseDB.ref('payments').child(roll.key).remove()
+                })
+            }
+        })
     }
 
     return (
@@ -107,7 +111,7 @@ const Payments = ({togglePayments}) => {
                                 {/* <p>{i+1}</p> */}
                                 <p>{payment.dateAdded.slice(0, 10)}</p>
                                 <p>{payment.Name}</p>
-                                <p>Stage {parseInt(payment.Stage)+1} payment from FSPRO</p>
+                                <p>Stage {parseInt(payment.Stage)+1} payment from FSP</p>
                                 <p>{payment.nextEarningAmount}</p>
                                 <p>{payment.acc_no}</p>
                             </div>
@@ -118,7 +122,7 @@ const Payments = ({togglePayments}) => {
 
                 <div className="cta">
                     <button className="decline" onClick={declineSelected}>Decline selected</button>
-                    <button className="initiate" onClick={update}>Update selected</button>
+                    <button className="initiate" style={{marginLeft: '2rem'}} onClick={update}>Update selected</button>
                 </div>
                 
                 <div className="cta">
