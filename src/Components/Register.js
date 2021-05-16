@@ -655,7 +655,9 @@ const Register = () => {
         // planType: e.target.planType.value,
         Stage: 0,
         lastActivityTitle: 'registration',
-        balance: 0
+        balance: 0,
+        spent: 0,
+        fsp21: true
       }
       firebaseDB.ref("lastUsername").once('value').then(snapshot=> {
         const username = `FSPY0${parseInt(snapshot.val().yakata)+1}`
