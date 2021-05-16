@@ -637,6 +637,7 @@ const Register = () => {
     const register = (e) => {
       setLoading(true)
       e.preventDefault()
+      getDuedates(regCounter.date)
       const userDetails = {
         ["Registration Date"]: regCounter.date,
         Name: bankName,
@@ -689,7 +690,9 @@ const Register = () => {
               setOfficer("")
 
               // send duedate as sms
-              sendDuedates(userDetails.phone, username)
+              setTimeout(() => {
+                sendDuedates(userDetails.phone, username)
+              }, 1000);
             })
             firebaseDB.ref('regCounter').update({
               accounts: regCounter.accounts+1
@@ -720,12 +723,28 @@ const Register = () => {
       })
     }
 
-    const getDuedates = (regDate) => {
+    const getDuedates = (regDate, type) => {
       const dueDates = []
-      for(let i = 1; i<=8; i++){
-        const date = moment(regDate, "DD-MM-YYYY").businessAdd((i*30), 'day').format("DD-MM-YYYY")
+      setAccType(type)
+      if(type==='bT2'){
+        for(let i = 2; i<=6; i+=2){
+          const date = moment(regDate, "DD-MM-YYYY").businessAdd((i), 'month').format("DD-MM-YYYY")
+          dueDates.push(date)
+        }
+      }else if(type==='bT1') {
+        for(let i = 1; i<=8; i++){
+          const date = moment(regDate, "DD-MM-YYYY").businessAdd((i), 'month').format("DD-MM-YYYY")
+          dueDates.push(date)
+        }
+      }else if(type==='st') {
+          const date = moment(regDate, "DD-MM-YYYY").businessAdd((6), 'month').format("DD-MM-YYYY")
+          dueDates.push(date)
+        
+      }else {
+        const date = moment(regDate, "DD-MM-YYYY").businessAdd((1), 'year').format("DD-MM-YYYY")
         dueDates.push(date)
-      }
+      
+    }
       setDuedates(dueDates)
     }
 
@@ -762,28 +781,28 @@ const Register = () => {
 
                 <div className="">
                     <div className="fieldset">
-                            <input id="bT1" type="radio" value="bT1" onChange={()=>setAccType("bT1")} name="account_type" />
+                            <input id="bT1" type="radio" value="bT1" onChange={()=>getDuedates(regCounter.date, "bT1")} name="account_type" />
                             <label for="bT1">BT1</label>
 
-                            <input id="bT2" type="radio" value="bT2" onChange={()=>setAccType("bT2")} name="account_type" />
+                            <input id="bT2" type="radio" value="bT2" onChange={()=>getDuedates(regCounter.date, "bT2")} name="account_type" />
                             <label for="bT2">BT2</label>
 
-                            <input id="st" type="radio" value="st" onChange={()=>setAccType("st")} name="account_type" />
+                            <input id="st" type="radio" value="st" onChange={()=>getDuedates(regCounter.date, "st")} name="account_type" />
                             <label for="st">Standard</label>
                       
-                            <input id="dnt" type="radio" value="dnt" onChange={()=>setAccType("dnt")} name="account_type" />
+                            <input id="dnt" type="radio" value="dnt" onChange={()=>getDuedates(regCounter.date, "dnt")} name="account_type" />
                             <label for="dnt">DNT</label>
 
-                            <input id="pt1" type="radio" value="pt1" onChange={()=>setAccType("pt1")} name="account_type" />
+                            <input id="pt1" type="radio" value="pt1" onChange={()=>getDuedates(regCounter.date, "pt1")} name="account_type" />
                             <label for="pt1">PT1</label>
 
-                            <input id="pt2" type="radio" value="pt2" onChange={()=>setAccType("pt2")} name="account_type" />
+                            <input id="pt2" type="radio" value="pt2" onChange={()=>getDuedates(regCounter.date, "pt2")} name="account_type" />
                             <label for="pt2">PT2</label>
                     </div>
                 </div>
 
                 {
-                  accType.includes("bT")?
+                  accType && accType.includes("bT")?
                   <select name="invplan">
                     <option value="p_50k">NGN50,000</option>
                     <option value="p_100k">NGN100,000</option>
