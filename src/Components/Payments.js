@@ -37,7 +37,7 @@ const Payments = ({togglePayments}) => {
                     "BankCode":e.bankCode,
                     "AccountNo":e.acc_no.trim(),
                     "Amount": e.nextEarningAmount,
-                    "Narration":e.naration,
+                    "Narration":`Stage ${parseInt(e.Stage)+1} payment from FSP`,
                 })
             }
         })

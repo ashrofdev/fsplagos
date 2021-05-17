@@ -222,8 +222,15 @@ const Table = () => {
     }
     
     const pushUser = (investor, checked) => {
+        const data = {
+            nextEarningAmount: investor.nextEarningAmount,
+            Name: investor.Name,
+            Stage: investor.Stage,
+            bankCode: investor.bankCode,
+            acc_no: investor.acc_no,
+        }
         if(checked){
-            firebaseDB.ref('payments').child(investor.key).set({...investor, dateAdded: moment().toString()})
+            firebaseDB.ref('payments').child(investor.key).set({...data, dateAdded: moment().toString()})
         }else {
             firebaseDB.ref('payments').child(investor.key).set(null)
         }

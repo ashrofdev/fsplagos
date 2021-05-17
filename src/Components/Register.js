@@ -661,15 +661,15 @@ const Register = () => {
         fsp21: true
       }
       firebaseDB.ref("lastUsername").once('value').then(snapshot=> {
-        let username = `FSPB0${parseInt(snapshot.val().basic)+1}`
+        let username = `FSPB00${parseInt(snapshot.val().basic)+1}`
         if(accType==='st'){
-          username = `FSPS0${parseInt(snapshot.val().standard)+1}`
+          username = `FSPS00${parseInt(snapshot.val().standard)+1}`
           firebaseDB.ref("lastUsername").update({standard: parseInt(snapshot.val().standard)+1})
         }else if(accType==='dnt'){
           username = `FSPDNT0${parseInt(snapshot.val().dnt)+1}`
           firebaseDB.ref("lastUsername").update({dnt: parseInt(snapshot.val().dnt)+1})
-        }else if(accType==='pt'){
-          username = `FSPP0${parseInt(snapshot.val().premium)+1}`
+        }else if(accType==='pt1'||accType==='pt2'){
+          username = `FSPP00${parseInt(snapshot.val().premium)+1}`
           firebaseDB.ref("lastUsername").update({premium: parseInt(snapshot.val().premium)+1})
         }else {
           firebaseDB.ref("lastUsername").update({basic: parseInt(snapshot.val().basic)+1})
@@ -824,13 +824,21 @@ const Register = () => {
                 </div>
 
                 {
-                  accType && accType.includes("bT")?
+                  accType==="bT"?
                   <select name="invplan">
                     <option value="p_50k">NGN50,000</option>
                     <option value="p_100k">NGN100,000</option>
                     <option value="p_150k">NGN150,000</option>
                     <option value="p_200k">NGN200,000</option>
                     <option value="p_250k">NGN250,000</option>
+                  </select>:
+                  accType==="bT2"?
+                  <select name="invplan">
+                    <option value="p2_50k">NGN50,000</option>
+                    <option value="p2_100k">NGN100,000</option>
+                    <option value="p2_150k">NGN150,000</option>
+                    <option value="p2_200k">NGN200,000</option>
+                    <option value="p2_250k">NGN250,000</option>
                   </select>:
                   accType==='st'?
                   <select name="invplan">
@@ -848,8 +856,8 @@ const Register = () => {
                     <option value="p_500k">NGN500,000</option>
                   </select>:
                   accType==='pt1'?
-                  <input placeholder="Enter amount" defaultValue="1000000" min="1000000" max="5000000" type="number" step="100000" />:
-                  <input placeholder="Enter amount" defaultValue="6000000" min="6000000" type="number" step="500000" />
+                  <input name="invplan" placeholder="Enter amount" defaultValue="1000000" min="1000000" max="5000000" type="number" step="100000" />:
+                  <input name="invplan" placeholder="Enter amount" defaultValue="6000000" min="6000000" type="number" step="500000" />
                 }
 
                 <div className="officer">
