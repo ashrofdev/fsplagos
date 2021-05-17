@@ -157,7 +157,7 @@ const Table = () => {
         let tnextweek = 0
         investors.forEach(investor => {
             const regDate = investor["Registration Date"]
-            const days = 30*(parseInt(investor.Stage)+1)
+            const months = parseInt(investor.Stage)+1
             const holidays = ['2019-01-01','2019-02-22','2019-04-19','2019-04-22','2019-05-01','2019-05-29',
             '2019-06-04','2019-06-05','2019-06-12','2019-08-12','2019-08-13','2019-10-01','2019-11-9',
             '2019-11-11','2019-12-25','2019-12-26','2020-01-01','2020-04-10','2020-04-13','2020-05-01',
@@ -169,8 +169,16 @@ const Table = () => {
                 holidayFormat: 'YYYY-MM-DD'
             });
 
-            const dueDate = moment(business(regDate, 'DD-MM-YYYY').businessAdd(days)._d)
-
+            let dueDate = moment(regDate, 'DD-MM-YYYY').add(months, 'month').businessAdd(1, 'day')
+            if(investor.account_type==="bT2"){
+                dueDate = moment(regDate, 'DD-MM-YYYY').add(months*2, 'month').businessAdd(1, 'day')
+            }else if(investor.account_type==="bT2"){
+                dueDate = moment(regDate, 'DD-MM-YYYY').add(months*2, 'month').businessAdd(1, 'day')
+            }else if(investor.account_type==="st"){
+                dueDate = moment(regDate, 'DD-MM-YYYY').add(6, 'month').businessAdd(1, 'day')
+            }else if(investor.account_type==="pt"){
+                dueDate = moment(regDate, 'DD-MM-YYYY').add(1, 'year').businessAdd(1, 'day')
+            }
             const stage = parseInt(investor.Stage)
             const roi = roiss[investor.invplan]
             console.log(roi)

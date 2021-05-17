@@ -661,7 +661,19 @@ const Register = () => {
         fsp21: true
       }
       firebaseDB.ref("lastUsername").once('value').then(snapshot=> {
-        const username = `FSPY0${parseInt(snapshot.val().yakata)+1}`
+        let username = `FSPB0${parseInt(snapshot.val().basic)+1}`
+        if(accType==='st'){
+          username = `FSPS0${parseInt(snapshot.val().st)+1}`
+          firebaseDB.ref("lastUsername").update({standard: parseInt(snapshot.val().standard)+1})
+        }else if(accType==='dnt'){
+          username = `FSPDNT0${parseInt(snapshot.val().dnt)+1}`
+          firebaseDB.ref("lastUsername").update({dnt: parseInt(snapshot.val().dnt)+1})
+        }else if(accType==='pt'){
+          username = `FSPP0${parseInt(snapshot.val().premium)+1}`
+          firebaseDB.ref("lastUsername").update({premium: parseInt(snapshot.val().premium)+1})
+        }else {
+          firebaseDB.ref("lastUsername").update({basic: parseInt(snapshot.val().basic)+1})
+        }
         console.log(username)
         // setUsername(username)
         if(bankName === 'Couldn\'t fetch bank name!'){
@@ -724,24 +736,34 @@ const Register = () => {
     }
 
     const getDuedates = (regDate, type) => {
+      const holidays = ['2019-01-01','2019-02-22','2019-04-19','2019-04-22','2019-05-01','2019-05-29',
+      '2019-06-04','2019-06-05','2019-06-12','2019-08-12','2019-08-13','2019-10-01','2019-11-9',
+      '2019-11-11','2019-12-25','2019-12-26','2020-01-01','2020-04-10','2020-04-13','2020-05-01',
+      '2020-05-25','2020-05-26','2020-06-12','2020-07-30','2020-07-31','2020-10-01','2020-10-29',
+      '2020-12-25','2020-12-26','2021-01-01','2021-04-02','2021-04-05','2021-05-01','2021-05-12',
+      '2021-06-12','2021-07-19','2021-10-01','2021-10-18','2021-12-25','2021-12-26' ]
+      moment.updateLocale('us', {
+          holidays,
+          holidayFormat: 'YYYY-MM-DD'
+      });
       const dueDates = []
       setAccType(type)
       if(type==='bT2'){
         for(let i = 2; i<=6; i+=2){
-          const date = moment(regDate, "DD-MM-YYYY").businessAdd((i), 'month').format("DD-MM-YYYY")
+          const date = moment(regDate, "DD-MM-YYYY").add((i), 'month').businessAdd(1, 'day').format("DD-MM-YYYY")
           dueDates.push(date)
         }
       }else if(type==='bT1') {
         for(let i = 1; i<=8; i++){
-          const date = moment(regDate, "DD-MM-YYYY").businessAdd((i), 'month').format("DD-MM-YYYY")
+          const date = moment(regDate, "DD-MM-YYYY").add((i), 'month').businessAdd(1, 'day').format("DD-MM-YYYY")
           dueDates.push(date)
         }
       }else if(type==='st') {
-          const date = moment(regDate, "DD-MM-YYYY").businessAdd((6), 'month').format("DD-MM-YYYY")
+          const date = moment(regDate, "DD-MM-YYYY").add((6), 'month').businessAdd(1, 'day').format("DD-MM-YYYY")
           dueDates.push(date)
         
       }else {
-        const date = moment(regDate, "DD-MM-YYYY").businessAdd((1), 'year').format("DD-MM-YYYY")
+        const date = moment(regDate, "DD-MM-YYYY").add((1), 'year').businessAdd(1, 'day').format("DD-MM-YYYY")
         dueDates.push(date)
       
     }
