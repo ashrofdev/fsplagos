@@ -213,10 +213,14 @@ const Table = () => {
 
     const handleSearchChange = (value) => {
         const filtered = investors.filter(investor=>{
-            if(investor.Name){
-                return investor.Name.toLowerCase().includes(value.toLowerCase())
+            if(investor.Name && investor.Name.toLowerCase().includes(value.toLowerCase())){
+                return investor
+            }else if(investor["User name"] && investor["User name"].toLowerCase().includes(value.toLowerCase())){
+                return investor
+            }else if(investor["Phone Number"] && investor["Phone Number"].toLowerCase().includes(value.toLowerCase())){
+                return investor
             }
-            return investor
+            // return investor
         })
         setFilteredInvestors(filtered)
     }
