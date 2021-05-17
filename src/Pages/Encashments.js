@@ -39,6 +39,7 @@ const Encashments = () => {
     const deleteEncashment = (key) => {
         firebaseDB.ref('encashments').child(key).remove().then(e=> {
             getEncashments()
+            console.log(key)
         })
     }
 
@@ -82,7 +83,7 @@ const Encashments = () => {
                                 <p>{encashment.acc_no}</p>
                                 <h3 className="amount">NGN {encashment.amount-encashment.encashedAmount}</h3>
                                 <button onClick={()=> toggleEncash(encashment)} className="sidebtn" title="encash"><FontAwesome size="1x" name="money"/></button>
-                                <button onDoubleClick={()=> deleteEncashment(encashment.key)} className="sidebtn delete" title="delete"><FontAwesome size="1x" name="times"/></button>
+                                <button onDoubleClick={()=> deleteEncashment(encashment.key)} className="sidebtn delete" title="double click to delete"><FontAwesome size="1x" name="times"/></button>
                                 {
                                     encashment.openEncash?
                                     <form onSubmit={(e)=> encash(e, encashment.key)} className="form">
