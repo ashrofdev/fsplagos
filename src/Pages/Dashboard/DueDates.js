@@ -24,7 +24,7 @@ const DueDates = () => {
                 holidayFormat: 'YYYY-MM-DD'
             });
 
-            const dueDate = moment(business(regDate, 'DD-MM-YYYY').businessAdd(days)._d).toString()
+            const dueDate = moment(regDate, 'DD-MM-YYYY').add(stage, 'month').businessAdd(1, 'day').toString()
 
             dueDates.push(dueDate)
 

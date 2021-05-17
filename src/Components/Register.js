@@ -663,7 +663,7 @@ const Register = () => {
       firebaseDB.ref("lastUsername").once('value').then(snapshot=> {
         let username = `FSPB0${parseInt(snapshot.val().basic)+1}`
         if(accType==='st'){
-          username = `FSPS0${parseInt(snapshot.val().st)+1}`
+          username = `FSPS0${parseInt(snapshot.val().standard)+1}`
           firebaseDB.ref("lastUsername").update({standard: parseInt(snapshot.val().standard)+1})
         }else if(accType==='dnt'){
           username = `FSPDNT0${parseInt(snapshot.val().dnt)+1}`
