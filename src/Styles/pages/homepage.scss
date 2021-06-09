@@ -312,4 +312,49 @@
 
         
     }
+
+    &  .onlines {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        width: 35rem;
+        z-index: 100;
+
+        
+
+        &  .card {
+            width: 90%;
+            box-shadow: 1px 1px 5px rgba(73, 73, 73, 0.219);
+            border-radius: .5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            background-color: $white;
+            position: relative;
+            &  .amount {
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                padding: .3rem;
+            }
+
+            &  h3 {
+                padding: 1rem;
+                font-size: 1.5rem;
+            }
+
+            &  .cta {
+                display: flex;
+                
+                
+                &  button {
+                    padding: 1rem;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: $primary-blue;
+                    background-color: transparent;
+                    border: none;
+                }
+            }
+        }
+    }
 }
