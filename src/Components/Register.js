@@ -638,9 +638,8 @@ const Register = () => {
       setLoading(true)
       e.preventDefault()
       getDuedates(regCounter.date)
-      const date = moment().format('DD-MM-YYYY').toString()
       const userDetails = {
-        ["Registration Date"]: date,
+        ["Registration Date"]: regCounter.date,
         Name: bankName,
         email: e.target.email.value,
         address: e.target.address.value,

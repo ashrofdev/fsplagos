@@ -47,7 +47,7 @@ const Encashments = () => {
         const payRoll = []
         encashments.forEach(payment=> {
             payRoll.push({
-                "BeneficiaryName":payment.bankName,
+                "BeneficiaryName":payment.Name,
                 "BankCode":payment.bankCode,
                 "AccountNo":payment.acc_no,
                 "Amount": payment.amount-payment.encashedAmount,
