@@ -10,6 +10,7 @@ import FontAwesome from 'react-fontawesome';
 import Issue from '../Pages/Dashboard/Issue';
 import Issues from './Issues';
 import Upgrades from './Upgrades';
+import CurrencyFormat from 'react-currency-format';
 
 const Table = () => {
     const [openBoard, setOpenDashboard] = useState(false)
@@ -29,6 +30,7 @@ const Table = () => {
     const [today, setToday] = useState(0)
     const [thisweek, setThisweek] = useState(0)
     const [nextweek, setNextweek] = useState(0)
+    const [overdueAmount, setOverdueAmount] = useState(0)
 
         // getRoi()
         useEffect(()  =>{
@@ -74,6 +76,7 @@ const Table = () => {
 
 
     const filterTable = (state) => {
+                let amount = 0
             const filtered = investors.filter(investor=>{
                 openIssues(false)
                 openUpgrades(false)
@@ -90,6 +93,13 @@ const Table = () => {
                 }else if(state==='upgrades'){
                     openUpgrades(true)
                     return upgrades
+                }else if(state==='overdue'){
+                    
+                    if(investor.dueDate.isBefore(moment(), 'day') || investor.dueDate.isSame(moment(), 'day')){
+                        amount+= investor.nextEarningAmount
+                        setOverdueAmount(amount)
+                    }
+                    return investor.dueDate.isBefore(moment(), 'day') || investor.dueDate.isSame(moment(), 'day')
                 }
 
                 return investor
@@ -280,6 +290,7 @@ const Table = () => {
                     <li onClick={()=> filterTable('thisweek')}>Due This week <span>{thisweek}</span></li>
                     <li onClick={()=> filterTable('nextweek')}>Due Next week <span>{nextweek}</span></li>
                     <li onClick={()=> filterTable('upgrades')}>Upgrades <span>{0}</span></li>
+                    <li onClick={()=> filterTable('overdue')}>Credit <span>{<CurrencyFormat value={overdueAmount} displayType={'text'} thousandSeparator={true} prefix={'₦'} />}</span></li>
                     <li onClick={()=> filterTable('issues')}>Issues <span style={{backgroundColor: 'rgb(255, 102, 0)'}}>{activeIssues}</span></li>
                 </ul>
             </nav>

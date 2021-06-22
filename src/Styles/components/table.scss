@@ -17,9 +17,9 @@
             list-style: none;
 
             &  li {
-                font-size: 1.5rem;
+                font-size: 1.1rem;
                 cursor: pointer;
-                padding: 1.5rem;
+                padding: 1.5rem .5rem;
                 width: 100%;
                 &:hover {
                     background-color: $primary-blue;
