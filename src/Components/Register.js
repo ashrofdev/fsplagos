@@ -719,7 +719,7 @@ const Register = () => {
     const getRegDate = () => {
       firebaseDB.ref('regCounter').on('value', snapshot => {
         const regCounter = snapshot.val()
-        if(regCounter.accounts<=30){
+        if(regCounter.accounts<=5){
           setRegCounter(regCounter)
           getDuedates(regCounter.date)
         }else {
