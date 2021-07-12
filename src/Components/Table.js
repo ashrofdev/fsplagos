@@ -308,6 +308,7 @@ const Table = () => {
                         <h3>S/N</h3>
                         <h3>Name</h3>
                         <h3>Username</h3>
+                        <h3>Phone number</h3>
                         <h3>Capital</h3>
                         <h3>Stage</h3>
                         <h3>Next Earning</h3>
@@ -325,6 +326,7 @@ const Table = () => {
                                             </div>
                                             <h4 onClick={()=> openDashboard(investor)}>{investor.Name}</h4>
                                             <p>{investor["User name"]}</p>
+                                            <p>{investor.phone}</p>
                                             <p>{investor.invplan}</p>
                                             <p>{investor.Stage}</p>
                                             {

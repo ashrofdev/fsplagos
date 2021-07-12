@@ -70,7 +70,7 @@
 
     &  .tablehead {
         display: grid;
-        grid-template-columns: 5rem minmax(15rem, 40rem) repeat(4, minmax(10rem, 15rem));
+        grid-template-columns: 5rem minmax(15rem, 40rem) repeat(5, minmax(10rem, 15rem));
         font-size: 1.2rem;
         background-color: rgb(230, 249, 255);
         padding: 2rem;
@@ -86,7 +86,7 @@
         &  .inv {
             background-color: $white;
             display: grid;
-            grid-template-columns: 5rem minmax(15rem, 40rem) repeat(4, minmax(10rem, 15rem));
+            grid-template-columns: 5rem minmax(15rem, 40rem) repeat(5, minmax(10rem, 15rem));
             font-size: 1.2rem;
             padding: 2rem;
             border-bottom: 1px solid $light-background;
