@@ -175,24 +175,24 @@ const Account = () => {
 
     const editBank = () => {
         setLoading(true)
-        const invName = investor.Name.split("").sort().join("").toLowerCase()
-        const bankName = targetName.split("").sort().join("").toLowerCase()
+        // const invName = investor.Name.split("").sort().join("").toLowerCase()
+        // const bankName = targetName.split("").sort().join("").toLowerCase()
 
-        const string1 = invName
-        const string2 = bankName
-        let compareNum = 0; 
-        console.log(string1,string2)
+        // const string1 = invName
+        // const string2 = bankName
+        // let compareNum = 0; 
+        // console.log(string1,string2)
 
-        let l = Math.min(string1.length, string2.length);
-        for( let i=0; i<l; i++) {
-            if( string1.charAt(i) === string2.charAt(i)) compareNum++;
-        }        
-        console.log(compareNum)
+        // let l = Math.min(string1.length, string2.length);
+        // for( let i=0; i<l; i++) {
+        //     if( string1.charAt(i) === string2.charAt(i)) compareNum++;
+        // }        
+        // console.log(compareNum)
         
         
-        const percent = (compareNum/l)*100
-        setPercentageEquality(percent)
-        if(percent>=80){
+        // const percent = (compareNum/l)*100
+        // setPercentageEquality(percent)
+        // if(percent>=80){
             firebaseDB.ref('investors').child(investor.key).update({
                 bank: bank.split(",")[1],
                 bankCode: bank.split(",")[2],
@@ -204,15 +204,21 @@ const Account = () => {
                     message: 'Account details updates successfully'
                 })
                 setLoading(false)
+            }).catch(err=>{
+                setAlert({
+                    status: true,
+                    type: 'neg',
+                    message: 'Verification error'
+                })
             })
-        }else {
-            setAlert({
-                status: true,
-                type: 'neg',
-                message: 'Verification error'
-            })
-            setLoading(false)
-        }
+        // }else {
+        //     setAlert({
+        //         status: true,
+        //         type: 'neg',
+        //         message: 'Verification error'
+        //     })
+        //     setLoading(false)
+        // }
     }
 
     return (
