@@ -831,6 +831,12 @@ const Register = () => {
                     <option value="p_150k">NGN150,000</option>
                     <option value="p_200k">NGN200,000</option>
                     <option value="p_250k">NGN250,000</option>
+                    <option value="p_300k">NGN300,000</option>
+                    <option value="p_350k">NGN350,000</option>
+                    <option value="p_400k">NGN400,000</option>
+                    <option value="p_500k">NGN500,000</option>
+                    <option value="p_700k">NGN700,000</option>
+                    <option value="p_750k">NGN750,000</option>
                   </select>:
                   accType==="bT2"?
                   <select name="invplan">
