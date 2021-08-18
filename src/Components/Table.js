@@ -36,7 +36,7 @@ const Table = () => {
         useEffect(()  =>{
             getInvestors()
             if(investor.key){
-                firebaseDB.ref('investors').child(investor.key).on('value', snapshot => {
+                firebaseDB.ref('investors').limitToLast(1).child(investor.key).on('value', snapshot => {
                     setInvestor({...snapshot.val(), key: snapshot.key})
                     
                 })
@@ -187,6 +187,8 @@ const Table = () => {
             }else if(investor.account_type==="st"){
                 dueDate = moment(regDate, 'DD-MM-YYYY').add(6, 'month').businessAdd(1, 'day')
             }else if(investor.account_type==="pt"){
+                dueDate = moment(regDate, 'DD-MM-YYYY').add(1, 'year').businessAdd(1, 'day')
+            }else if(investor.account_type==="dnt"){
                 dueDate = moment(regDate, 'DD-MM-YYYY').add(1, 'year').businessAdd(1, 'day')
             }
             const stage = parseInt(investor.Stage)

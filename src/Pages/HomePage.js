@@ -5,6 +5,7 @@ import Alert from '../Components/Alert'
 import Encashments from './Encashments';
 import FontAwesome from 'react-fontawesome';
 import { BrowserRouter, NavLink, Route, Switch } from 'react-router-dom';
+import Orders from './Orders';
 
 const HomePage = () => {
     const [alert, setAlert] = useState({
@@ -26,6 +27,7 @@ const HomePage = () => {
                         <NavLink to="/"><h2 className="heading">Freedom Synergy Pro</h2></NavLink>
                     </div>
                     <div className="right">
+                        <NavLink to="/orderlist"><FontAwesome size="2x" name="shopping-cart" /></NavLink>
                         <NavLink to="/encashments"><FontAwesome size="2x" name="money" /></NavLink>
                     </div>
                 </header>
@@ -34,6 +36,7 @@ const HomePage = () => {
                         
                         {/* <Table/> */}
                             <Switch>
+                                <Route path="/orderlist" component={Orders}/>
                                 <Route path="/encashments" component={Encashments}/>
                                 <Route path="/" component={Table}/>
                             </Switch>
