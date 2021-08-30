@@ -848,10 +848,10 @@ const Register = () => {
                   </select>:
                   accType==='st'?
                   <select name="invplan">
-                    <option value="p_100k">NGN100,000</option>
-                    <option value="p_150k">NGN150,000</option>
-                    <option value="p_200k">NGN200,000</option>
-                    <option value="p_250k">NGN250,000</option>
+                    <option value="ps_50k">NGN50,000</option>
+                    <option value="ps_150k">NGN150,000</option>
+                    <option value="ps_350k">NGN350,000</option>
+                    <option value="ps_750k">NGN750,000</option>
                   </select>:
                   accType==='dnt'?
                   <select name="invplan">

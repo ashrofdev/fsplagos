@@ -42,7 +42,28 @@ const DueDates = () => {
                 
             }
         }else if(investor.account_type==='st'){
-            const dueDate = moment(regDate, 'DD-MM-YYYY').add(6, 'month').businessAdd(1, 'day').toString()
+            stage = 6
+            for (stage; stage <=10; stage+=6) {
+    
+                const holidays = ['2019-01-01','2019-02-22','2019-04-19','2019-04-22','2019-05-01','2019-05-29',
+                '2019-06-04','2019-06-05','2019-06-12','2019-08-12','2019-08-13','2019-10-01','2019-11-9',
+                '2019-11-11','2019-12-25','2019-12-26','2020-01-01','2020-04-10','2020-04-13','2020-05-01',
+                '2020-05-25','2020-05-26','2020-06-12','2020-07-30','2020-07-31','2020-10-01','2020-10-29',
+                '2020-12-25','2020-12-26','2021-01-01','2021-04-02','2021-04-05','2021-05-01','2021-05-12',
+                '2021-06-12','2021-07-19','2021-10-01','2021-10-18','2021-12-25','2021-12-26' ]
+                moment.updateLocale('us', {
+                    holidays,
+                    holidayFormat: 'YYYY-MM-DD'
+                });
+    
+                const dueDate = moment(regDate, 'DD-MM-YYYY').add(stage, 'month').businessAdd(1, 'day').toString()
+    
+                dueDates.push(dueDate)
+    
+                
+                
+            }
+            const dueDate = moment(regDate, 'DD-MM-YYYY').add(stage, 'month').businessAdd(1, 'day').toString()
     
             dueDates.push(dueDate)
         }else {

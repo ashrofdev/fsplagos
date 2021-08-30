@@ -10,6 +10,7 @@ import DueDates from './DueDates';
 import Issue from './Issue';
 import Upgrade from './Upgrade';
 import { UserContext } from '../../Components/Context';
+import UserId from './UserId';
 
 const Dashboard = ({openDashboard}) => {
 
@@ -28,6 +29,7 @@ const Dashboard = ({openDashboard}) => {
                             <main>
                                 <div className="large">
                                         <Switch>
+                                            <Route path="/admin/id" component={UserId}/>
                                             <Route path="/admin/profile" component={Profile}/>
                                             <Route path="/admin/update" component={Update}/>
                                             <Route path="/admin/account" component={Account}/>
@@ -46,6 +48,7 @@ const Dashboard = ({openDashboard}) => {
                                     <Link to="/admin/messaging"><button>Messaging</button></Link>
                                     <Link to="/admin/upgrade"><button>Upgrade account</button></Link>
                                     <Link to="/admin/issue"><button>New issue</button></Link>
+                                    <Link to="/admin/id"><button>User ID</button></Link>
                                     {/* <Link to="/admin/profile"><button>Profile</button></Link> */}
                                 </div>
                             </main>
