@@ -855,6 +855,7 @@ const Register = () => {
                   </select>:
                   accType==='dnt'?
                   <select name="invplan">
+                    <option value="p_150k">NGN150,000</option>
                     <option value="p_250k">NGN250,000</option>
                     <option value="p_300k">NGN300,000</option>
                     <option value="p_350k">NGN350,000</option>
